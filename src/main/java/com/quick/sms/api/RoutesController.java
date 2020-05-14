@@ -2,6 +2,7 @@ package com.quick.sms.api;
 
 import java.util.List;
 
+import com.quick.sms.repository.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import com.quick.sms.vo.InputRequest;
 import com.quick.sms.vo.Response;
 
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @RequestMapping("/routes")
@@ -30,7 +32,11 @@ public class RoutesController {
 	
 	@Autowired
 	RouteService userService;
-	
+
+	@Autowired
+	RouteRepository routeRepository;
+
+	@ApiIgnore
 	@PostMapping("add-route")
 	public ResponseEntity<Response> addUser(Authentication authentication, @RequestBody InputRequest request){
 		Response response = new Response();
@@ -44,7 +50,8 @@ public class RoutesController {
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
-	
+
+	@ApiIgnore
 	@PostMapping("update-route")
 	public ResponseEntity<Response> modifyGateway(Authentication authentication,@RequestBody InputRequest request){
 		Response response = new Response();
@@ -53,6 +60,7 @@ public class RoutesController {
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
 
+	@ApiIgnore
 	@GetMapping("delete-route/{gatewayId}")
 	public ResponseEntity<Response> deleteRoute(Authentication authentication, @PathVariable String gatewayId){
 		Response response = new Response();
@@ -66,7 +74,8 @@ public class RoutesController {
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
-	
+
+	@ApiIgnore
 	@GetMapping("fetch-routes")
 	public ResponseEntity<Response> fetchGateways(Authentication authentication){
 		Response response = new Response();
@@ -74,7 +83,8 @@ public class RoutesController {
 		response.setResponse(list);
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
-	
+
+	@ApiIgnore
 	@GetMapping("fetch-active-routes")
 	public ResponseEntity<Response> fetchActiveGateways(Authentication authentication){
 		Response response = new Response();
@@ -82,5 +92,11 @@ public class RoutesController {
 		response.setResponse(list);
 		return new ResponseEntity<>(response, HttpStatus.OK); 
 	}
+
+	@GetMapping("")
+	public List<Route> getAllRoutes(Authentication authentication){
+		return routeRepository.findAll();
+	}
+
 
 }

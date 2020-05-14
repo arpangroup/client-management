@@ -27,7 +27,9 @@ import com.quick.sms.vo.InputRequest;
 import com.quick.sms.vo.Response;
 
 import lombok.extern.slf4j.Slf4j;
+import springfox.documentation.annotations.ApiIgnore;
 
+@ApiIgnore
 @RestController
 @CrossOrigin(origins = "*")
 @Slf4j
