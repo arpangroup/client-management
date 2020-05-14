@@ -1,0 +1,11 @@
+GET http://localhost:8090/getAllClients
+
+###
+
+GET http://localhost:8090/api/v1/pricing/price/5ebc2fc9df8b1b6b98fdb83e/all
+
+###
+
+GET http://localhost:8090/api/v1/pricing/bundle/5ebc2fc9df8b1b6b98fdb83e/all
+
+###

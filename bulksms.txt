@@ -1,0 +1,64 @@
+=============================================================================================
+Generate API Key
+=============================================================================================
+
+http://atssms.com:8090/client/generateApiKey
+HTTP::POST
+
+
+=============================================================================================
+Bulk SMS
+=============================================================================================
+
+QUICK SMS 
+=============================================================================================
+
+http://atssms.com:8090/sms/sendQuickSms
+HTTP::POST
+Request:
+{
+	"headers":{},
+	"requestType": "QUICKSMS",
+	"payload":{
+		"smsGateway": "5e2be915a6efed25afaf203f",
+		"senderId":"SNEDERID",
+		"countryCode":"+91",
+		"globalStatus":"true",
+		"recipients" : "99111,11111",
+		"delimiter" : ",",
+		"removeDuplicate" : "true",
+		"messageType" : "Plain"
+		"message" : "Test Message"
+	}
+}
+
+
+===============================================================================================
+Check File Contents
+===============================================================================================
+
+http://localhost:8090/sms/checkFileContents
+"numbers"  selected file property 
+
+===============================================================================================
+Submit Bulk SMS
+===============================================================================================
+http://atssms.com:8090/sms/bulkSmsRequest
+HTTP::POST ( multipart) 
+
+
+numnbers ( file) 
+request :
+{
+	"headers":{},
+	"requestType": "BULKSMS",
+	"payload":{
+		"smsGateway": "5e2be915a6efed25afaf203f",
+		"senderId":"SNEDERID",
+		"countryCode":"+91",
+		"globalStatus":"true",
+		"removeDuplicate" : "true",
+		"messageType" : "Plain"
+		"message" : "Test Message"
+	}
+}

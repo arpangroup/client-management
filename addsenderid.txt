@@ -1,0 +1,71 @@
+var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1ZTMwNjM2OTFlNmJiOTJkYTg2NGQ2YjQiLCJpYXQiOjE1ODEwOTkzMzAsImV4cCI6MTU4MTcwNDEzMH0.bWfn5q-gsLOipVS6GmeuZuaQAyReCW5BnADjqwVoXlvkEX8_En56FAjmyjO2-ROJEH5EkD1EAkU0UPdrSe3Q4w");
+myHeaders.append("Content-Type", "multipart/form-data; boundary=--------------------------599269150311273128988385");
+
+var formdata = new FormData();
+formdata.append("documentFile", fileInput.files[0], "/C:/Users/Jesus/Downloads/reports (2).csv");
+formdata.append("request", "{\n	\"headers\":{},\n	\"requestType\": \"ADDSENDERID\",\n	\"payload\":{\n		\"clientId\": \"5e2be915a6efed25afaf203f\",\n		\"clientName\":\"Swamy\",\n		\"senderIds\":\"Id1,Id2,Id3\",\n		\"entityId\": \"5e2be915a6efed25afaf203f\",\n		\"entityName\" : \"MyEntity\",\n		\"categoryId\": \"5e2be915a6efed25afaf203f\",\n		\"categoryName\" : \"MyCategory\",\n		\"isActive\" : \"true\"\n	}\n}");
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+
+fetch("http://localhost:8090/addSenderId", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+  
+***********************************************************************************
+  
+var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1ZTMwNjM2OTFlNmJiOTJkYTg2NGQ2YjQiLCJpYXQiOjE1ODEwOTkzMzAsImV4cCI6MTU4MTcwNDEzMH0.bWfn5q-gsLOipVS6GmeuZuaQAyReCW5BnADjqwVoXlvkEX8_En56FAjmyjO2-ROJEH5EkD1EAkU0UPdrSe3Q4w");
+myHeaders.append("Content-Type", "multipart/form-data; boundary=--------------------------599269150311273128988385");
+
+var formdata = new FormData();
+formdata.append("documentFile", fileInput.files[0], "/C:/Users/Jesus/Downloads/reports (2).csv");
+formdata.append("request", "{\n	\"headers\":{},\n	\"requestType\": \"ADDSENDERID\",\n	\"payload\":{\n		\"id\": \"5e2be915a6efed25afaf203f\",\n		\"clientId\": \"5e2be915a6efed25afaf203f\",\n		\"clientName\":\"Swamy\",\n		\"senderIds\":\"Id1,Id2,Id3\",\n		\"entityId\": \"5e2be915a6efed25afaf203f\",\n		\"entityName\" : \"MyEntity\",\n		\"categoryId\": \"5e2be915a6efed25afaf203f\",\n		\"categoryName\" : \"MyCategory\",\n		\"isActive\" : \"true\"\n	}\n}");
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+
+fetch("http://localhost:8090/updateSenderId", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));  
+
+
+*************************************************************************************
+
+Approve / Reject Sender Id
+
+*************************************************************************************
+http://localhost:8090/updateStatus/Approved/5e36c41008ab8e18e6b95e76
+
+
+http://localhost:8090/updateStatus/Rejected/5e36c41008ab8e18e6b95e76
+
+*************************************************************************************
+delete sender Id
+*************************************************************************************
+localhost:8090/deleteSenderId?senderId=5e2d22fefd67ac2d00285d71
+
+HTTP::GET
+Response::
+{
+    "resCode": 200,
+    "response": "Sender ID Deleted successfully."
+}
+
+*************************************************************************************
+getAll sender Id
+*************************************************************************************
+
+localhost:8090/getAllSenderIds
+HTTP::GET

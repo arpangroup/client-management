@@ -1,0 +1,90 @@
+
+================================================================================================
+Routes
+==============================================================================================
+http://atssms.com:8090/routes/add-route
+HTTP:POST
+
+Request:
+{
+	"headers":{},
+	"requestType": "ADD-ROUTE",
+	"payload":{
+		  "port": 7894,
+		  "hostname": "atssms.in",
+		  "routeName": "MyRoute1",
+		  "systemId": "12345678990",
+		  "password": "pa$$word",
+		  "transmitter": "Transmitter",
+		  "tranceiver": "tranceiver",
+		  "receiver": "receiver",
+		  "status": "Active",
+		  "type": "type"
+	}
+}
+
+=================================================================================================
+http://atssms.com:8090/routes/update-route
+HTTP::POST
+Request:
+{
+	"headers":{},
+	"requestType": "UPDATE-ROUTE",
+	"payload":{
+		    "routeId" : "5e46e5d182b7002662c900bf",
+		    "port" : 7894,
+		    "hostname" : "atssms.in",
+		    "routeName" : "MyRoute1",
+		    "systemId" : "12345678990",
+		    "password" : "pa$$word",
+		    "transmitter" : "Transmitter",
+		    "tranceiver" : "tranceiver",
+		    "receiver" : "receiver",
+		    "status" : "Active",
+		    "type" : "type"		
+	}
+}
+
+=================================================================================================
+http://atssms.com:8090/routes/fetch-routes
+
+HTTP:GET
+
+Response:
+{
+    "status": true,
+    "resCode": 0,
+    "response": [
+        {
+            "routeId": "5e46e5d182b7002662c900bf",
+            "port": 7894,
+            "hostname": "atssms.in",
+            "routeName": "MyRoute1",
+            "systemId": "12345678990",
+            "password": "pa$$word",
+            "transmitter": "Transmitter",
+            "tranceiver": "tranceiver",
+            "receiver": "receiver",
+            "status": "Active",
+            "type": "type",
+            "createdBy": "superadmin",
+            "createdOn": "2020-02-14T23:54:17.831",
+            "updatedBy": null,
+            "updatedOn": null
+        }
+    ],
+    "sessionToken": null
+}
+
+======================================================================================================
+http://localhost:8090/routes/delete-route/5e46e5d182b7002662c900bf
+HTTP:GET
+
+Response:
+{
+    "status" : true,
+    "resCode": 200,
+    "response": "Route Deleted successfully."
+}
+
+

@@ -1,0 +1,579 @@
+
+
+API:
+=====
+
+LOGIN :: 
+==============================
+http://localhost:8090/api/auth/signin
+
+{
+  "password": "Reset@123",
+  "usernameOrEmail": "superadmin"
+}
+
+
+
+
+For All the Below requests add Authorization header with bearer token;
+EX : 
+var settings = {
+  "url": "http://206.189.131.177/roles/countries",
+  "method": "GET",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNTc3MjE0NTkyLCJleHAiOjE1Nzc4MTkzOTJ9.oqCrKAnOt1dMUCUq9V0o3qkm5WWyw5Hn-jfdX9qh3h4lC3shUVMrK36GZKPsVlyf8t295wtZmpyoSUMDHbEMmQ"
+  },
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+
+
+
+
+
+================================================================================================
+localhost:8090/addClientGroup
+Request:
+{
+	"headers":{},
+	"requestType": "ADDCLIENTGROUP",
+	"payload":{
+		"groupName":"Sample Group",
+		"status": "Active",
+		"createdBy":"Admin"
+	}
+}
+
+=====================================================================================================
+localhost:8090/updateClientGroup
+Request::
+{
+	"headers":{},
+	"requestType": "UPDATECLIENTGROUP",
+	"payload":{
+		"id":"5e2c676838809212c0e56a85",
+		"groupName":"Test Group",
+		"status": "Active",
+		"createdBy":"Admin"
+	}
+}
+
+========================================================================================================
+localhost:8090/deleteClientGroup?groupId=5e2c676838809212c0e56a85
+
+Response:
+{
+    "resCode": 200,
+    "response": "ClientGroup Deleted successfully."
+}
+
+if client maps some client will not delete
+
+=============================================================================================
+localhost:8090/getClientGroups
+
+[
+    {
+        "id": "5e2c676838809212c0e56a85",
+        "groupName": "Test Group",
+        "status": "Active",
+        "createdBy": "Admin",
+        "isDeleted": false,
+        "createdTime": "2020-01-26T00:09:29.634",
+        "updatedTime": "2020-01-26T00:09:29.634"
+    }
+]
+
+=========================================================
+localhost:8090/addClient
+
+{
+	"headers":{},
+	"requestType": "ADDCLIENT",
+	"payload":{
+		"firstName": "Swamy",
+		"lastName": "pendli",
+		"company": "abc",
+		"website": "abc.com",
+		"email": "abc@abc.com",
+		"userName":"kumaraswamy",
+		"password":"xxxx",
+		"userType" : "DISTRIBUTOR/RESELLER/CLIENT"
+		"phoneNumber":"3324234324",
+		"address":"hyd",
+		"moreAddress":"hyderabad...",
+		"country":"india",
+		"state":"Telanga",
+		"city": "Hyderabad",
+		"postalCode":"24324324",
+		"isResellerPanel": "true",
+		"isApiAccess":"true",
+		"clientGroup": "HYF",
+		"groupId": "5e2c676838809212c0e56a85",
+		"smsGateway":"India",
+		"smsLimit": "10000",
+		"isClientNotify":"true"
+	}
+}
+
+
+=================================================
+localhost:8090/updateClient
+{
+	"headers":{},
+	"requestType": "UPDATECLIENT",
+	"payload":{
+		"id":"5e2be915a6efed25afaf203f",
+		"firstName": "Swamy",
+		"lastName": "pendli",
+		"company": "abc",
+		"website": "abc.com",
+		"email": "abc@abc.com",
+		"userName":"kumaraswamy",
+		"password":"xxxx",
+		"phoneNumber":"3324234324",
+		"userType" : "DISTRIBUTOR/RESELLER/CLIENT"
+		"address":"hyd",
+		"moreAddress":"hyderabad...",
+		"country":"india",
+		"state":"Telanga",
+		"city": "Hyderabad",
+		"postalCode":"24324324",
+		"isResellerPanel": "true",
+		"isApiAccess":"true",
+		"clientGroup": "HYF",
+		"groupId": "5e2c676838809212c0e56a85",
+		"smsGateway":"India",
+		"smsLimit": "10000",
+		"isClientNotify":"true"
+	}
+}
+
+==============================================================
+HTTP::GET   localhost:8090/getAllClients
+=======
+Response:
+
+[
+    {
+        "id": "5e2be915a6efed25afaf203f",
+        "firstName": "Swamy",
+        "lastName": "pendli",
+        "company": "abc",
+        "website": "abc.com",
+        "email": "abc@abc.com",
+        "userName": "kumaraswamy",
+        "password": "xxxx",
+        "phoneNumber": "3324234324",
+        "address": "hyd",
+        "moreAddress": "hyderabad...",
+        "country": "india",
+        "state": "Telanga",
+        "city": "Hyderabad",
+        "postalCode": 24324324,
+        "clientGroup": "HYF",
+        "smsGateway": "India",
+		"groupId": "5e2c676838809212c0e56a85",
+        "smsLimit": 10000,
+        "isResellerPanel": true,
+        "isApiAccess": true,
+        "isClientNotify": true,
+        "time": "2020-01-25T15:19:26.012"
+    }
+]
+
+=========================================================================
+localhost:8090/createTicket
+
+{
+	"headers":{},
+	"requestType": "CREATETICKET",
+	"payload":{
+		"clientId":"5e2be915a6efed25afaf203f",
+		"subject": "Test"
+		
+	}
+}
+
+============================================================================
+HTTP::GET
+localhost:8090/getClientSupportTickets?clientId=5e2be915a6efed25afaf203f
+
+Response:
+[
+    {
+        "id": "5e2c3f8c1bf752336aa7dddd",
+        "clientId": "5e2be915a6efed25afaf203f",
+        "subject": "Test",
+        "status": "INITIAL",
+        "action": "Need to close ASAP",
+        "createdTime": "2020-01-25T21:15:56.311",
+        "updatedTime": "2020-01-25T21:15:56.311"
+    },
+    {
+        "id": "5e2c400d9147412ad5d3f87b",
+        "clientId": "5e2be915a6efed25afaf203f",
+        "subject": "Test1",
+        "status": "INITIAL",
+        "action": "Need to close ASAP",
+        "createdTime": "2020-01-25T21:18:05.049",
+        "updatedTime": "2020-01-25T21:18:05.049"
+    }
+]
+
+====================================================================================
+
+localhost:8090/addNewInvoice
+HTTP::POST
+Request::
+{
+	"headers":{},
+	"requestType": "ADDNEWINVOICE",
+	"payload":{
+		"clientId":"5e2be915a6efed25afaf203f",
+		"clientName": "Swamy",
+		"invoiceType": "Monthly",
+		"amount": "100000"
+	}
+}
+
+===================================================================================
+localhost:8090/getClientInvoices?clientId=5e2be915a6efed25afaf203f
+
+HTTP::GET
+
+Response:
+[
+    {
+        "id": "5e2c478c0d386c1f9099e334",
+        "clientId": "5e2be915a6efed25afaf203f",
+        "clientName": "Swamy",
+        "invoiceType": "Monthly",
+        "status": "INITIAL",
+        "amount": 100000,
+        "createdTime": "2020-01-25T21:50:04.574",
+        "updatedTime": "2020-01-25T21:50:04.575"
+    }
+]
+
+===================================================================================
+localhost:8090/updateClientSmsLimit
+HTTP::POST
+Request:
+{
+	"headers":{},
+	"requestType": "UPDATESMSLIMIT",
+	"payload":{
+		"clientId":"5e2be915a6efed25afaf203f",
+		"smsBalance": "-1000"
+	}
+}
+
+2nd Request
+{
+	"headers":{},
+	"requestType": "UPDATESMSLIMIT",
+	"payload":{
+		"clientId":"5e2be915a6efed25afaf203f",
+		"smsBalance": "2000"
+	}
+}
+
+=========================================================================================
+localhost:8090/getClientSmsTransactions?clientId=5e2be915a6efed25afaf203f
+HTTP::GET
+Response::
+[
+    {
+        "id": "5e2c530c7d57442b77651cc8",
+        "amount": 500,
+        "clientId": "5e2be915a6efed25afaf203f",
+        "createdTime": "2020-01-25T22:39:07.971"
+    },
+    {
+        "id": "5e2c53647d57442b77651cc9",
+        "amount": -1000,
+        "clientId": "5e2be915a6efed25afaf203f",
+        "createdTime": "2020-01-25T22:40:36.448"
+    }
+]
+
+============================================================================================
+localhost:8090/getClientSmsTransactions?clientId=5e2be915a6efed25afaf203f
+HTTP::GET
+
+[
+    {
+        "id": "5e2c530c7d57442b77651cc8",
+        "amount": 500,
+        "clientId": "5e2be915a6efed25afaf203f",
+        "createdTime": "2020-01-25T22:39:07.971"
+    },
+    {
+        "id": "5e2c53647d57442b77651cc9",
+        "amount": -1000,
+        "clientId": "5e2be915a6efed25afaf203f",
+        "createdTime": "2020-01-25T22:40:36.448"
+    }
+]
+
+==============================================================================================
+localhost:8090/saveSmsTemplate
+HTTP:POST
+
+Request:
+{
+	"headers":{},
+	"requestType": "SAVESMSTEMPLATE",
+	"payload":{
+		"templateName":"First template",
+		"from":"Ultimate sms",
+		"field":"Company",
+		"template": "Hi <UserName>, welcome <UserName>",
+		"isGlobal":"true"
+	}
+}
+
+=================================================================================================
+localhost:8090/updateSmsTemplate
+HTTP::POST
+Request:
+{
+	"headers":{},
+	"requestType": "SAVESMSTEMPLATE",
+	"payload":{
+		"id": "5e2d14fc506f9e602c878e8d",
+		"templateName":"Second template",
+		"from":"Ultimate sms",
+		"field":"Company",
+		"template": "Hi <UserName>, welcome <UserName>",
+		"isGlobal":"false"
+	}
+}
+
+=================================================================================================
+localhost:8090/getAllSmsTemplates
+
+HTTP:GET
+
+Response:
+[
+    {
+        "id": "5e2d14fc506f9e602c878e8d",
+        "templateName": "Second template",
+        "from": "Ultimate sms",
+        "status": null,
+        "field": "Company",
+        "template": "Hi <UserName>, welcome <UserName>",
+        "isGlobal": false,
+        "isDeleted": false,
+        "createdTime": "2020-01-26T12:30:29.618",
+        "updatedTime": "2020-01-26T12:30:29.618"
+    }
+]
+
+======================================================================================================
+localhost:8090/deleteSmsTemplate?templateId=5e2d14fc506f9e602c878e8d
+HTTP:GET
+
+Response:
+{
+    "resCode": 200,
+    "response": "SMS Template Deleted successfully."
+}
+
+
+=========================================================================================================
+localhost:8090/addSenderId
+HTTP::POST
+Request:
+
+{
+	"headers":{},
+	"requestType": "ADDSENDERID",
+	"payload":{
+		"clientId": "5e2be915a6efed25afaf203f",
+		"clientName":"Swamy",
+		"senderIds":"Id1,Id2,Id3",
+		"status":"Block"
+	}
+}
+
+==========================================================================================================
+localhost:8090/getAllSenderIds
+HTTP::GET
+
+Response:
+[
+    {
+        "id": "5e2d22fefd67ac2d00285d71",
+        "senderId": "Id1",
+        "clientId": "5e2be915a6efed25afaf203f",
+        "clientName": "Swamy",
+        "status": "Block",
+        "isDeleted": false,
+        "createdTime": "2020-01-26T13:26:21.876",
+        "updatedTime": "2020-01-26T13:26:21.876"
+    },
+    {
+        "id": "5e2d22fefd67ac2d00285d72",
+        "senderId": "Id2",
+        "clientId": "5e2be915a6efed25afaf203f",
+        "clientName": "Swamy",
+        "status": "Block",
+        "isDeleted": false,
+        "createdTime": "2020-01-26T13:26:21.877",
+        "updatedTime": "2020-01-26T13:26:21.877"
+    },
+    {
+        "id": "5e2d22fefd67ac2d00285d73",
+        "senderId": "Id3",
+        "clientId": "5e2be915a6efed25afaf203f",
+        "clientName": "Swamy",
+        "status": "Block",
+        "isDeleted": false,
+        "createdTime": "2020-01-26T13:26:21.877",
+        "updatedTime": "2020-01-26T13:26:21.877"
+    }
+]
+
+=========================================================================================
+localhost:8090/updateSenderId
+HTTP::POST
+Request:
+
+{
+	"headers":{},
+	"requestType": "UPDATESENDERID",
+	"payload": {
+        "id": "5e2d22fefd67ac2d00285d71",
+        "senderId": "ChangedId",
+        "clientId": "5e2be915a6efed25afaf203f",
+        "clientName": "Swamy",
+        "status": "Block"
+	}
+}
+Response:
+ {
+    "resCode": 200,
+    "response": "Sender Id updated successfully"
+}
+
+================================================================================================
+
+localhost:8090/deleteSenderId?senderId=5e2d22fefd67ac2d00285d71
+
+HTTP::GET
+Response::
+{
+    "resCode": 200,
+    "response": "Sender ID Deleted successfully."
+}
+
+=====================================================================================================
+
+localhost:8090/createRole
+HTTP::POST
+Request:
+{
+	"headers":{},
+	"requestType": "CREATEROLE",
+	"payload": {
+        "roleName": "First Role",
+        "status": "Active"
+	}
+}
+
+Response:
+{
+    "resCode": 200,
+    "response": "Role Created successfully."
+}
+======================================================================================================
+localhost:8090/getAllRoles
+HTTP::GET
+Response:
+[
+    {
+        "id": "5e2d9ffaf99202466376f398",
+        "roleName": "First Role",
+        "status": "Active",
+        "rules": null,
+        "isDeleted": false,
+        "createdTime": "2020-01-26T22:19:38.272",
+        "updatedTime": "2020-01-26T22:19:38.273"
+    }
+]
+
+=============================================================================================================
+localhost:8090/updateRole
+HTTP::POST
+Request::
+{
+	"headers":{},
+	"requestType": "UPDATEROLE",
+	"payload": {
+		"id": "5e2d9ffaf99202466376f398",
+        "roleName": "Second Role",
+        "status": "Active"
+	}
+}
+
+Response:
+{
+    "resCode": 200,
+    "response": "Added Rules to Role successfully."
+}
+
+==============================================================================================================
+localhost:8090/setAdminRules
+HTTP::POST
+Request
+{
+	"headers":{},
+	"requestType": "SETADMINRULES",
+	"payload": {
+		"id": "5e2d9ffaf99202466376f398",
+        "rules": "Rule1,Rule2,Rule3,Rule4,Rule5"
+	}
+}
+
+Response
+{
+    "resCode": 200,
+    "response": "Added Rules to Role successfully."
+}
+
+=============================================================================================================
+localhost:8090/deleteRole?roleId=5e2d9ffaf99202466376f398
+HTTP::GET
+Response::
+{
+    "resCode": 200,
+    "response": "Role Deleted successfully."
+}
+
+
+
+
+ADD BULK SMS 
+=============================
+localhost:8090/bulkSmsRequest
+
+{
+	"headers":{},
+	"requestType": "QUICKSMS",
+	"payload":{
+		"senderId": "12123",
+		"recipients": "121,131,141,151,161,171,181,191",
+		"message": "Bulk SMS Request",
+		"scheduleRequired": "false",
+		"scheduledTime": ""
+	}
+}
+
+=================================================================

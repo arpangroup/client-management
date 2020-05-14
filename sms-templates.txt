@@ -1,0 +1,61 @@
+
+================================================================================================
+SMS Templates
+==============================================================================================
+localhost:8090/sms/saveSmsTemplate
+HTTP:POST
+
+Request:
+{
+	"headers":{},
+	"requestType": "SAVESMSTEMPLATE",
+	"payload":{
+		"message":"First template",
+		"templateName":'Template1'
+	}
+}
+
+=================================================================================================
+localhost:8090/sms/updateSmsTemplate
+HTTP::POST
+Request:
+{
+	"headers":{},
+	"requestType": "UPDATESMSTEMPLATE",
+	"payload":{
+		"id": "5e2d14fc506f9e602c878e8d",
+		"templateName":'Template1',
+		"message":"Updated template"
+	}
+}
+
+=================================================================================================
+localhost:8090/sms/getAllSmsTemplates
+
+HTTP:GET
+
+Response:
+[
+    {
+        "id": "5e2d14fc506f9e602c878e8d",
+        "templateName":'Template1',
+        "message":"Updated template",
+        "createdBy": "superadmin",
+        "isDeleted": false,
+        "createdTime": "2020-01-26T12:30:29.618",
+        "updatedTime": "2020-01-26T12:30:29.618"
+    }
+]
+
+======================================================================================================
+localhost:8090/sms/deleteSmsTemplate/5e2d14fc506f9e602c878e8d
+HTTP:GET
+
+Response:
+{
+    "status" : true,
+    "resCode": 200,
+    "response": "SMS Template Deleted successfully."
+}
+
+

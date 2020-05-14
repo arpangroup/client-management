@@ -1,0 +1,14 @@
+Fetch Active Groups :
+===========================================================================================
+http://atssms.com:8090/groups/getActiveGroups
+GET
+
+Fetch Active Groups :
+===========================================================================================
+
+http://atssms.com:8090/routes/fetch-active-routes
+
+
+Fetch Active Sender Id's :
+===========================================================================================
+http://localhost:8090/getActiveSenderIds

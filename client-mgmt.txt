@@ -1,0 +1,174 @@
+var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1ZTMwNjM2OTFlNmJiOTJkYTg2NGQ2YjQiLCJpYXQiOjE1ODEyNjkzODUsImV4cCI6MTU4MTg3NDE4NX0.qb4y-v2v4Kv7HDH4Jtk2RDxSEgYoj_Z87LIirP8MZHZjWmjkZBfDe-cNdluT7beS9eQoBDWrEEZLe4Jd8xQjVQ");
+myHeaders.append("Content-Type", "multipart/form-data; boundary=--------------------------589105808140231158851200");
+
+var formdata = new FormData();
+formdata.append("payload", "{\n	\"headers\":{},\n	\"requestType\": \"ADDCLIENT\",\n	\"payload\":{\n		\"firstName\": \"Swamy\",\n		\"lastName\": \"pendli\",\n		\"company\": \"abc\",\n		\"dltRegistrationNo\" : \"1234567\",\n		\"gstno\" : \"GST1234567\",\n		\"website\": \"abc.com\",\n		\"email\": \"abc@abc.com\",\n		\"userName\":\"kumaraswamy\",\n		\"password\":\"xxxx\",\n		\"phoneNumber\":\"3324234324\",\n		\"address\":\"hyd\",\n		\"country\":\"india\",\n		\"state\":\"Telanga\",\n		\"city\": \"Hyderabad\",\n		\"postalCode\":\"24324324\",\n		\"assignedCredits\": \"10000\",\n		\"billingType\" : \"Submit\",\n		\"creditType\" : \"Prepaid\", \n		\"notifyWithEmail\" : \"Yes\",\n		\"smsType\" : \"TRANSACTIONAL\", \n		\"smsTemplateType\" : \"Template\"\n		\"referredBy\": \"Suresh\",\n		\"isApiAccess\":\"true\",\n		\"clientGroup\": \"HYF\",\n		\"groupId\": \"5e2c676838809212c0e56a85\",\n		\"assignRoute\":\"India\",\n		\"isClientNotify\":\"true\",\n		\"userType\" : \"ADMIN/DISTRIBUTOR/RESELLER/USER\",\n		\n		\n		\"entityType\" : \"None\",\n		\"orgCategory\" : \"None\",\n		\"pan\" : \"\",\n		\"cinOrGstOrTan\" : \"\",\n		\"idProof\" : \"\",\n		\"otherDocName\" : \"\",\n		\"authorisedName\" : \"\",\n		\"designation\" : \"\"\n	}\n}");
+formdata.append("requestType", "ADDCLIENT");
+formdata.append("panDoc", fileInput.files[0], "/path/to/file");
+formdata.append("cinOrGstOrTanDoc", fileInput.files[0], "/path/to/file");
+formdata.append("idProofDoc", fileInput.files[0], "/path/to/file");
+formdata.append("otherDoc", fileInput.files[0], "/path/to/file");
+formdata.append("authorisedDoc", fileInput.files[0], "/path/to/file");
+formdata.append("agreementDoc", fileInput.files[0], "/path/to/file");
+formdata.append("avatar", fileInput.files[0], "/path/to/file");
+
+var requestOptions = {
+  method: 'POST',
+  headers: myHeaders,
+  body: formdata,
+  redirect: 'follow'
+};
+
+fetch("localhost:8090/addClient", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+  
+
+******************************
+Below is the json format to stringify and append to request 
+****************************** 
+  
+{
+	"headers":{},
+	"requestType": "ADDCLIENT",
+	"payload":{
+		"firstName": "Swamy",
+		"lastName": "pendli",
+		"company": "abc",
+		"dltRegistrationNo" : "1234567",
+		"gstno" : "GST1234567",
+		"website": "abc.com",
+		"email": "abc@abc.com",
+		"userName":"kumaraswamy",
+		"password":"xxxx",
+		"phoneNumber":"3324234324",
+		"address":"hyd",
+		"country":"india",
+		"state":"Telanga",
+		"city": "Hyderabad",
+		"postalCode":"24324324",
+		"assignedCredits": "10000",
+		"billingType" : "Submit",
+		"creditType" : "Prepaid", 
+		"notifyWithEmail" : "Yes",
+		"smsType" : "TRANSACTIONAL", 
+		"smsTemplateType" : "Template"
+		"referredBy": "Suresh",
+		"isApiAccess":"true",
+		"clientGroup": "HYF",
+		"groupId": "5e2c676838809212c0e56a85",
+		"assignRoute":"India",
+		"isClientNotify":"true",
+		"userType" : "ADMIN/DISTRIBUTOR/RESELLER/USER",
+		"price" : "15"
+
+		
+		"entityType" : "None",
+		"orgCategory" : "None",
+		"pan" : "",
+		"cinOrGstOrTan" : "",
+		"idProof" : "",
+		"otherDocName" : "",
+		"authorisedName" : "",
+		"designation" : ""
+	}
+}
+
+*******************************
+Edit Client request Body
+*******************************
+fetch("localhost:8090/updateClient", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+
+
+
+******************************
+Below is the json format to stringify and append to request
+******************************
+
+
+{
+	"headers":{},
+	"requestType": "ADDCLIENT",
+	"payload":{
+		"id" : "5e3063691e6bb92da864d6b4",
+		"firstName": "Swamy",
+		"lastName": "pendli",
+		"company": "abc",
+		"dltRegistrationNo" : "1234567",
+		"gstno" : "GST1234567",
+		"website": "abc.com",
+		"email": "abc@abc.com",
+		"userName":"kumaraswamy",
+		"password":"xxxx",
+		"phoneNumber":"3324234324",
+		"address":"hyd",
+		"country":"india",
+		"state":"Telanga",
+		"city": "Hyderabad",
+		"postalCode":"24324324",
+		"assignedCredits": "10000",
+		"billingType" : "Submit",
+		"creditType" : "Prepaid", 
+		"notifyWithEmail" : "Yes",
+		"smsType" : "TRANSACTIONAL", 
+		"smsTemplateType" : "Template"
+		"referredBy": "Suresh",
+		"isApiAccess":"true",
+		"clientGroup": "HYF",
+		"groupId": "5e2c676838809212c0e56a85",
+		"assignRoute":"India",
+		"isClientNotify":"true",
+		"userType" : "ADMIN/DISTRIBUTOR/RESELLER/USER",
+		"price" : "15"
+		
+		"entityType" : "None",
+		"orgCategory" : "None",
+		"pan" : "",
+		"cinOrGstOrTan" : "",
+		"idProof" : "",
+		"otherDocName" : "",
+		"authorisedName" : "",
+		"designation" : ""
+	}
+}
+
+
+
+*************************************************************************************
+
+Active / DeActive Sender Id
+
+*************************************************************************************
+http://localhost:8090/updateStatus/Active/5e36c41008ab8e18e6b95e76
+
+
+http://localhost:8090/updateStatus/Inactive/5e36c41008ab8e18e6b95e76
+
+
+
+*************************************************************************************
+Update Credits
+*************************************************************************************
+localhost:8090/updateClientSmsLimit
+HTTP::POST
+Request:
+{
+	"headers":{},
+	"requestType": "UPDATESMSLIMIT",
+	"payload":{
+		"clientId":"5e2be915a6efed25afaf203f",
+		"smsBalance": "-1000"
+	}
+}
+
+
+*************************************************************************************
+ For Quick SMS Please add recipient as client mobile number
+*************************************************************************************
+
+
