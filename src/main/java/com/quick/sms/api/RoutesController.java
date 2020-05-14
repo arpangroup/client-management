@@ -94,7 +94,7 @@ public class RoutesController {
 	}
 
 	@GetMapping("")
-	public List<Route> getAllRoutes(Authentication authentication){
+	public List<Route> getAllRoutes(){
 		return routeRepository.findAll();
 	}
 
