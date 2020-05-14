@@ -33,9 +33,9 @@ public class DBCommandLineRunner implements CommandLineRunner {
     @Autowired
     ClientService clientService;
 
-    List<String> ROUTE_PROMOTIONAL = Arrays.asList("5ebc2fc8df8b1b6b98fdb83b");
-    List<String> ROUTE_TRANSACTIONAL = Arrays.asList("5ebc2fc8df8b1b6b98fdb83c");
-    List<String> ROUTE_OTP = Arrays.asList("5ebc2fc8df8b1b6b98fdb83d");
+    List<String> ROUTE_PROMOTIONAL = Arrays.asList("1");
+    List<String> ROUTE_TRANSACTIONAL = Arrays.asList("2");
+    List<String> ROUTE_OTP = Arrays.asList("3");
 
     private void createRoutes(){
         Route route1 = new Route("PROMOTIONAL").setId("1");
@@ -110,14 +110,18 @@ public class DBCommandLineRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // RouteId: [{"5ebc2fc8df8b1b6b98fdb83b": "PROMOTIONAL"}, {"5ebc2fc8df8b1b6b98fdb83c": "TRANSACTIONAL"},  {"5ebc2fc8df8b1b6b98fdb83d": "OTP"}]
 //        createRoutes();
-        Client superAdmin = createSuperAdmin(); // ID: 5ebc2fc9df8b1b6b98fdb83e
+//        Client superAdmin = createSuperAdmin(); // ID: 5ebc2fc9df8b1b6b98fdb83e
 //        createPricingBySuperAdmin(superAdmin);
 //        createBundleBySuperAdmin(superAdmin);
 
 
-        //Client admin1 = createClient("ADMIN", ROUTE_PROMOTIONAL, false, "5ebc2fc9df8b1b6b98fdb83f", "5ebc2fc9df8b1b6b98fdb83e");
-        //Client reseller1 = createClient("RESELLER", ROUTE_PROMOTIONAL, false, "5ebc2fc9df8b1b6b98fdb840", "5ebc4ee98a02ea3fe961d687");
-        //Client reseller2 = createClient("RESELLER", ROUTE_TRANSACTIONAL, true, "5ebc2fc9df8b1b6b98fdb840", "5ebc4ee98a02ea3fe961d687");
+//        Client admin1 = createClient("ADMIN", ROUTE_PROMOTIONAL, false, "5ebc9d1d722e7f531ca24003", "5ebc9d1d722e7f531ca24002");
+//        Client admin2 = createClient("ADMIN", ROUTE_TRANSACTIONAL, false, "5ebc9d1d722e7f531ca24004", "5ebc9d1d722e7f531ca24002");
+//        Client admin3 = createClient("ADMIN", ROUTE_OTP, false, "5ebc9d1d722e7f531ca24004", "5ebc9d1d722e7f531ca24002");
+
+//        Client reseller1 = createClient("RESELLER", ROUTE_TRANSACTIONAL, true, "5ebc9d1e722e7f531ca24007", admin1.getId());
+
+//        Client client1 = createClient("CLIENT", ROUTE_PROMOTIONAL, true, "5ebc9d1e722e7f531ca24007", reseller1.getId());
 
     }
 }

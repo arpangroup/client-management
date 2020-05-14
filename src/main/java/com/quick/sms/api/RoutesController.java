@@ -1,7 +1,9 @@
 package com.quick.sms.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.quick.sms.repository.ClientRepository;
 import com.quick.sms.repository.RouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,9 @@ public class RoutesController {
 
 	@Autowired
 	RouteRepository routeRepository;
+
+	@Autowired
+	ClientRepository clientRepository;
 
 	@ApiIgnore
 	@PostMapping("add-route")
@@ -96,6 +101,17 @@ public class RoutesController {
 	@GetMapping("")
 	public List<Route> getAllRoutes(){
 		return routeRepository.findAll();
+	}
+
+	@GetMapping("/{clientId}")
+	public List<Route> getAllRoutes(@PathVariable("clientId") String clientId){
+		List<Route> routes = new ArrayList<>();
+		try{
+			routes = clientRepository.findById(clientId).get().getAssignRoute();
+		}catch(Exception e){
+			//
+		}
+		return routes;
 	}
 
 
