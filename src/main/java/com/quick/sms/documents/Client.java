@@ -55,8 +55,8 @@ public class Client implements Serializable {
 	private PricingPlan pricing;
 	private PricingBundle bundle;
 	//DLT_REGISTRATION_DATA
-	@BsonIgnore
-	private DLTRegistration dltRegistration;
+//	@BsonIgnore
+//	private DLTRegistration dltRegistration;
 
 	//private Integer assignedCredits;
 	//private String notifyWithEmail;
@@ -97,8 +97,8 @@ public class Client implements Serializable {
 				.setAssignRoute(route)
 				//.setAddress(requestObj.getA)
 				//.setWebsite(requestObj.getWebsite())
-				//.setCompany(requestObj.getCompany())
-				//.setCompanyType(requestObj.getCompanyType())
+				.setCompany(requestObj.getCompany())
+				.setCompanyType(requestObj.getCompanyType())
 				.setGstno(requestObj.getGstno())
 				//.setGstType(requestObj.getGstType())
 				//.setGstPercentage(requestObj.getGstPercentage())

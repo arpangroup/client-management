@@ -52,6 +52,10 @@ public class UserCreationDto {
     private List<String> routeIdList; // ["PROMOTIONAL", "TRANSACTIONAL"]
     //private String assignRoute; // ["PROMOTIONAL", "TRANSACTIONAL"]
 
+    private String website;
+    private String company;
+    private String companyType;
+
     private String gstno;
     private boolean isGstInclusive = false;
     //private String gstType;
