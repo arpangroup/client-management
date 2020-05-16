@@ -1,4 +1,4 @@
-package com.quick.sms.api;
+package com.quick.sms.controller;
 
 
 import java.util.List;
@@ -8,22 +8,17 @@ import com.quick.sms.dto.authentication.ChangePasswordByOtpDto;
 import com.quick.sms.dto.authentication.ChangePasswordDto;
 import com.quick.sms.dto.authentication.ForgotPasswordDto;
 import com.quick.sms.dto.authentication.ResetPasswordDto;
-import com.quick.sms.dto.request.usercreation.SuperAdminCreation;
 import com.quick.sms.dto.request.usercreation.UserCreationDto;
 import com.quick.sms.vo.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.quick.sms.service.ClientService;
 import com.quick.sms.utils.SmsPortalGenException;

@@ -16,10 +16,12 @@ public interface PricingService {
    public PricingPlan findByPricingIdAndUserId(String pricingId, String userId) throws Exception;
    public PricingPlan findByPricingId(String pricingId) throws Exception;
    public List<PricingPlan> findAllPricing(String userId) throws Exception;
+   public void deletePlan(String id) throws Exception;
     // Bundle
     public PricingBundle findOrCreate(PricingBundle bundle) throws Exception;
     public PricingBundle findByBundleIdAndUserId(String bundleId, String userId) throws Exception;
     public PricingBundle findByBundleId(String bundleId) throws Exception;
     public List<PricingBundle> findAllBundle(String userId) throws Exception;
+    public void deleteBundle(String id) throws Exception;
 
 }

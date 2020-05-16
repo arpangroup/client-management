@@ -51,6 +51,11 @@ public class PricingServiceImpl implements PricingService {
     }
 
     @Override
+    public void deletePlan(String id) throws Exception{
+        pricingPlanRepository.deleteById(id);
+    }
+
+    @Override
     public PricingBundle findOrCreate(PricingBundle bundle) throws Exception {
         if(bundle.getId() != null){
             Optional<PricingBundle> bundlePlan = pricingBundleRepository.findById(bundle.getId());
@@ -77,5 +82,10 @@ public class PricingServiceImpl implements PricingService {
     @Override
     public List<PricingBundle> findAllBundle(String userId) throws Exception{
         return pricingBundleRepository.findAllByCreatorUserId(userId);
+    }
+
+    @Override
+    public void deleteBundle(String id) throws Exception{
+        pricingBundleRepository.deleteById(id);
     }
 }

@@ -1,4 +1,4 @@
-package com.quick.sms.api;
+package com.quick.sms.controller;
 
 import java.util.ArrayList;
 import java.util.List;

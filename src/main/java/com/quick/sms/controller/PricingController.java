@@ -1,12 +1,8 @@
-package com.quick.sms.api;
+package com.quick.sms.controller;
 
 import com.quick.sms.documents.PricingBundle;
 import com.quick.sms.documents.PricingPlan;
-import com.quick.sms.service.InvoiceService;
 import com.quick.sms.service.PricingService;
-import com.quick.sms.utils.SmsPortalGenException;
-import com.quick.sms.vo.InputRequest;
-import com.quick.sms.vo.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,19 +24,30 @@ public class PricingController {
         return pricingService.findAllPricing(clientId);
     }
 
-
     @GetMapping("/bundle/{clientId}/all")
     public List<PricingBundle> getAllBundleBasedOnClientId(@PathVariable("clientId") String clientId) throws Exception{
         return pricingService.findAllBundle(clientId);
     }
 
-    @GetMapping("/plan/create")
+    @PostMapping("/plan/create")
     public PricingPlan createPlan(@Valid @RequestBody PricingPlan pricingPlan) throws Exception{
         return pricingService.findOrCreate(pricingPlan);
     }
 
-    @GetMapping("/bundle/create")
+    @PostMapping("/bundle/create")
     public PricingBundle createBundle(@Valid @RequestBody PricingBundle pricingBundle) throws Exception{
         return pricingService.findOrCreate(pricingBundle);
     }
+
+    @PutMapping("/plan/delete/{id}")
+    public void deletePlan(@PathVariable("id") String id) throws Exception{
+        pricingService.deletePlan(id);
+    }
+
+    @PutMapping("/bundle/delete{id}")
+    public void deleteBundle(@PathVariable("id") String id) throws Exception{
+        pricingService.deleteBundle(id);
+    }
+
+
 }

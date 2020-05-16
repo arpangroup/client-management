@@ -1,4 +1,4 @@
-package com.quick.sms.api;
+package com.quick.sms.controller;
 
 import com.quick.sms.service.InvoiceService;
 import com.quick.sms.utils.SmsPortalGenException;
