@@ -134,7 +134,7 @@ public class DBCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // RouteId: [{"5ebc2fc8df8b1b6b98fdb83b": "PROMOTIONAL"}, {"5ebc2fc8df8b1b6b98fdb83c": "TRANSACTIONAL"},  {"5ebc2fc8df8b1b6b98fdb83d": "OTP"}]
+        /*
         createRoutes();
         Client superAdmin = createSuperAdmin(); // ID: 5ebc2fc9df8b1b6b98fdb83e
         createPricingBySuperAdmin(superAdmin);
@@ -149,5 +149,6 @@ public class DBCommandLineRunner implements CommandLineRunner {
 
         Client client1 = createClient("CLIENT", ROUTE_PROMOTIONAL, true, "demo_b2", reseller1.getId());
 
+         */
     }
 }

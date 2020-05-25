@@ -171,7 +171,7 @@ public class ClientMangementController {
         return response;
     }
     /*=====================================08-May-2020==============================================*/
-    @PostMapping("/login")
+    @PostMapping("/signIn")
     public Response login(@Valid @RequestBody LoginRequest loginRequest) throws Exception{
         return clientService.loginClient(loginRequest);
     }

@@ -199,6 +199,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Response loginClient(LoginRequest loginRequest) throws Exception{
+        System.out.println("==================LOGIN=========================");
+        System.out.println(loginRequest);
+        System.out.println("==================LOGIN=========================");
         Optional<Client> clientOptional = clientRepository.findByUserNameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
         if(clientOptional.isPresent()) return new Response(true, 200, "Login Success", "jhgjgjgjgjgjgjjfhfhfhfhfhfhf");
         return new Response(false, 400, "Login fail", null);
