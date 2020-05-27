@@ -8,6 +8,7 @@ import com.quick.sms.dto.authentication.ResetPasswordDto;
 import com.quick.sms.dto.request.usercreation.SuperAdminCreation;
 import com.quick.sms.dto.request.usercreation.UserCreationDto;
 import com.quick.sms.enums.UserType;
+import com.quick.sms.exception.ConflictException;
 import com.quick.sms.exception.IdNotFoundException;
 import com.quick.sms.exception.InvalidParameterException;
 import com.quick.sms.repository.*;
@@ -130,6 +131,10 @@ public class ClientServiceImpl implements ClientService {
         clientOptional.orElseThrow(()->new IdNotFoundException("Invalid Creator Id"));
         Client creator = clientOptional.get();
 
+        // Step: Check whether userName is duplicated or not
+        Optional<Client> userNameOptional = clientRepository.findByUserName(requestObj.getUsername());
+       if(userNameOptional.isPresent())throw new ConflictException("Username is already available, Please try different username");
+
         // Step2: Check provided routeId is valid or not
         List<Route> routes = getRoutesFromIdList(requestObj.getRouteIdList());
 
@@ -203,7 +208,17 @@ public class ClientServiceImpl implements ClientService {
         System.out.println(loginRequest);
         System.out.println("==================LOGIN=========================");
         Optional<Client> clientOptional = clientRepository.findByUserNameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
-        if(clientOptional.isPresent()) return new Response(true, 200, "Login Success", "jhgjgjgjgjgjgjjfhfhfhfhfhfhf");
+        if(clientOptional.isPresent()) {
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Login Success");
+            response.put("id", clientOptional.get().getId());
+            response.put("userType", clientOptional.get().getUserType());
+            response.put("userType", clientOptional.get().getUserType());
+
+
+            return new Response(true, 200, response, "jhgjgjgjgjgjgjjfhfhfhfhfhfhf");
+        }
         return new Response(false, 400, "Login fail", null);
     }
 

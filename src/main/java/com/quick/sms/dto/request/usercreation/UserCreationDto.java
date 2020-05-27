@@ -17,34 +17,34 @@ import java.util.List;
 @Accessors(chain = true)
 @ToString
 public class UserCreationDto {
-    @NotNull(message = "{errors.user.userType.null}")
-    @NotEmpty(message = "{errors.user.userType.empty}")
+    @NotNull(message = "userType cant be null")
+    @NotEmpty(message = "userType cant be empty")
     private String userType;//UserType ==>[SUPER_ADMIN, ADMIN, RESELLER,USER]
 
 
-    @Size(min = 3, max = 100, message = "{errors.user.name.size}")
-    @NotNull(message = "{errors.user.name.null}")
-    @NotEmpty(message = "{errors.user.name.empty}")
+    @Size(min = 3, max = 100, message = "name must be minimum 5 characters")
+    @NotNull(message = "name cant be null")
+    @NotEmpty(message = "name cant be empty")
     private String name;
 
     private String email;
 
-    @Size(min = 5, max = 200, message = "{errors.user.username.size}")
-    @NotNull(message = "{errors.user.username.null}")
-    @NotEmpty(message = "{errors.user.username.empty}")
+    @Size(min = 5, max = 200, message = "Username must be minimum 5 characters")
+    @NotNull(message = "username cant be null")
+    @NotEmpty(message = "username cant be empty")
     private String username;
 
-    @Size(min = 5, max = 10, message = "{errors.user.password.size}")
-    @NotNull(message = "{errors.user.password.null}")
-    @NotEmpty(message = "{errors.user.password.empty}")
+    @Size(min = 5, max = 10, message = "password cant be null")
+    @NotNull(message = "password cant be null")
+    @NotEmpty(message = "password cant be empty")
     private String password;
 
     //private String roles;
 
 
-    @Size(min = 10, max = 10, message = "{errors.user.mobileNumber.size}")
-    @NotNull(message = "{errors.user.mobileNumber.null}")
-    @NotEmpty(message = "{errors.user.mobileNumber.empty}")
+    @Size(min = 10, max = 10, message = "phoneNumber must be of 10 digits")
+    @NotNull(message = "phoneNumber cant be null")
+    @NotEmpty(message = "phoneNumber cant be empty")
     private String phoneNumber;
 
     @NotNull(message = "{errors.user.routeId.null}")
@@ -77,8 +77,8 @@ public class UserCreationDto {
 
 
     private boolean isBundlePriceApplicable = true;
-    @NotNull(message = "{errors.user.routeId.null}")
-    @NotEmpty(message = "{errors.user.routeId.empty}")
+    @NotNull(message = "pricingId cant be null")
+    @NotEmpty(message = "pricingId cant be empty")
     private String pricingId;
     private float pricingAmount;
     private String bundlePriceId;

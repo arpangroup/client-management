@@ -14,7 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolationException;
 
-@Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	// MethodArgumentNotValidException
@@ -85,7 +84,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 
 		//ConflictException
 		@ExceptionHandler(ConflictException.class)
-		protected ResponseEntity<Object> handleConflictException(ConflictException ex,
+		public final ResponseEntity<Object> handleConflictException(ConflictException ex,
                                                                  WebRequest request) {
 			ApiError apiError = new ApiError( HttpStatus.CONFLICT, request.getDescription(false), ex);
 			apiError.setMessage("Conflicted Data Found");

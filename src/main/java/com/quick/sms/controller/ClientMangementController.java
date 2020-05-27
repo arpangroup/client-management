@@ -39,18 +39,9 @@ public class ClientMangementController {
     ClientService clientService;
 
     @PostMapping("/addClient")
-    public Response addClient(@Valid @RequestBody UserCreationDto dto){
+    public Client addClient(@Valid @RequestBody UserCreationDto dto) throws Exception{
         log.info("Adding client..., {}", dto);
-        Response response = new Response();
-        response.setResCode(200);
-        try{
-            clientService.createClient(dto);
-            response.setResponse("Client Created Successfully.");
-        }catch (Exception e){
-            response.setResponse("There was something went wrong in server for handling the addClient request.");
-            throw new SmsPortalGenException(e.getMessage());
-        }
-        return response;
+        return clientService.createClient(dto);
     }
 
     @PostMapping("/updateClient")
