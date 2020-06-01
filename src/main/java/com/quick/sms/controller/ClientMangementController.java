@@ -8,7 +8,10 @@ import com.quick.sms.dto.authentication.ChangePasswordByOtpDto;
 import com.quick.sms.dto.authentication.ChangePasswordDto;
 import com.quick.sms.dto.authentication.ForgotPasswordDto;
 import com.quick.sms.dto.authentication.ResetPasswordDto;
+import com.quick.sms.dto.request.profileupdate.UpdateUserDetails;
 import com.quick.sms.dto.request.usercreation.UserCreationDto;
+import com.quick.sms.dto.response.ClientDetailsResponse;
+import com.quick.sms.dto.response.ClientResponse;
 import com.quick.sms.vo.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -39,19 +42,18 @@ public class ClientMangementController {
     ClientService clientService;
 
     @PostMapping("/addClient")
-    public Client addClient(@Valid @RequestBody UserCreationDto dto) throws Exception{
+    public ClientDetailsResponse addClient(@Valid @RequestBody UserCreationDto dto) throws Exception{
         log.info("Adding client..., {}", dto);
         return clientService.createClient(dto);
     }
 
     @PostMapping("/updateClient")
-    public Response updateClient(@Valid @RequestParam String request){
+    public Response updateClient(@Valid @RequestBody UpdateUserDetails updateUserDetails){
         log.info("updating client...");
         Response response = new Response();
         response.setResCode(200);
-        InputRequest input = Utils.getObjectFromString(request);
         try{
-            clientService.updateClient(input);
+            clientService.updateClient(updateUserDetails);
             response.setResponse("Client Updated Successfully.");
         }catch (Exception e){
             log.error("Error while updating client", e);
@@ -62,12 +64,19 @@ public class ClientMangementController {
     }
 
     @GetMapping("/getAllClients")
-    public List<Client> getAllClients(){
+    public List<ClientResponse> getAllClients(){
        return clientService.getAllClients();
     }
-    
+
+    @GetMapping("/getAllClients/{parentId}")
+    public List<ClientResponse> getAllClientsUnderParentId(@PathVariable("parentId") String parentId) throws Exception{
+        return clientService.getAllClientsUnderParentId(parentId);
+    }
+
+
+
     @GetMapping("/getClientDetails/{clientId}")
-    public Client getAllClients(@PathVariable("clientId") String clientId) throws Exception{
+    public ClientDetailsResponse getClientById(@PathVariable("clientId") String clientId) throws Exception{
        return clientService.getClientById(clientId);
     }
 
@@ -142,15 +151,6 @@ public class ClientMangementController {
         return response;
     }
 
-    @GetMapping("client/get/{id}")
-    public Response getClientById(@PathVariable("id") String clientId) throws Exception{
-        log.info("updating sender id...");
-        Response response = new Response();
-        response.setResCode(200);
-        Client client = clientService.getClientById(clientId);
-        response.setResponse(null != client ? client : "Invalid details provided");
-        return response;
-    }
 
     @GetMapping("client/getBalance/{id}")
     public Response getSmsBalanceByClientId(@PathVariable("id") String clientId) {
@@ -161,31 +161,5 @@ public class ClientMangementController {
         //response.setResponse(null != client ? client.getAssignedCredits() : "Invalid details provided");
         return response;
     }
-    /*=====================================08-May-2020==============================================*/
-    @PostMapping("/signIn")
-    public Response login(@Valid @RequestBody LoginRequest loginRequest) throws Exception{
-        return clientService.loginClient(loginRequest);
-    }
-
-    @PostMapping("password/forgot")
-    public String forgotPassword(@Valid @RequestBody Authentication authentication, ForgotPasswordDto forgotPasswordDto) throws Exception{
-        return clientService.forgotPassword(forgotPasswordDto);
-    }
-
-    @PostMapping("password/change")
-    public String changePasswordAfterLogin(@Valid @RequestBody ChangePasswordDto changePasswordDto) throws Exception{
-        return clientService.changePasswordAfterLogin(changePasswordDto);
-    }
-
-    @PostMapping("password/change/by_otp")
-    public String changePasswordBeforeLogin(@Valid @RequestBody ChangePasswordByOtpDto dto) throws Exception{
-        return clientService.changePasswordBeforeLogin(dto);
-    }
-
-    @PostMapping("password/reset")
-    public String resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto) throws Exception{
-        return clientService.resetPassword(resetPasswordDto);
-    }
-    /*==============================================================================================*/
 
 }

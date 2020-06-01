@@ -1,6 +1,10 @@
 package com.quick.sms.serviceimpl;
 
 import com.quick.sms.documents.*;
+import com.quick.sms.dto.request.price.BundlePriceRequest;
+import com.quick.sms.dto.response.price.Bundle;
+import com.quick.sms.dto.response.price.BundlePriceResponse;
+import com.quick.sms.exception.ConflictException;
 import com.quick.sms.exception.IdNotFoundException;
 import com.quick.sms.repository.*;
 import com.quick.sms.service.PricingService;
@@ -8,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class PricingServiceImpl implements PricingService {
@@ -56,17 +60,16 @@ public class PricingServiceImpl implements PricingService {
     }
 
     @Override
-    public PricingBundle findOrCreate(PricingBundle bundle) throws Exception {
-        if(bundle.getId() != null){
-            Optional<PricingBundle> bundlePlan = pricingBundleRepository.findById(bundle.getId());
-            // If the bundle already exist then no need to create new bundle
-            if(bundlePlan.isPresent()) return bundlePlan.get();
-            PricingBundle bundleObj = new PricingBundle(bundle.getStartingUnit(), bundle.getEndingUnit(), bundle.getUnitPrice(), bundle.getGstPercentage(), bundle.getCreatorUserId());
-            return pricingBundleRepository.save(bundleObj);
-        }else{
-            PricingBundle bundleObj = new PricingBundle(bundle.getStartingUnit(), bundle.getEndingUnit(), bundle.getUnitPrice(), bundle.getGstPercentage(), bundle.getCreatorUserId());
-            return pricingBundleRepository.save(bundleObj);
-        }
+    public PricingBundle createBundlePrice(BundlePriceRequest bundlePriceRequest) throws Exception {
+        // Step1: Check same plan name already exist or not for the creator
+        String planName = bundlePriceRequest.getPlanName().toLowerCase();
+        String creatorId = bundlePriceRequest.getCreatorId();
+        Optional<PricingBundle> pricingBundleOptional = pricingBundleRepository.findByPlanNameAndCreatorUserId(planName, creatorId);
+        if (pricingBundleOptional.isPresent()) throw new ConflictException("Plan name already exist ");
+
+        PricingBundle pricingBundle = new PricingBundle(planName, creatorId, bundlePriceRequest.getBundles());
+        return pricingBundleRepository.save(pricingBundle);
+
     }
 
     @Override

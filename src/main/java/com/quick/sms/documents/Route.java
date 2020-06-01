@@ -3,13 +3,12 @@ package com.quick.sms.documents;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
+import com.quick.sms.dto.response.RouteResponse;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -60,4 +59,9 @@ public class Route implements Serializable {
     public Route(String routeName) {
         this.routeName = routeName;
     }
+
+    public static RouteResponse build(Route route){
+        return new RouteResponse(route.id, route.routeName);
+    }
+
 }

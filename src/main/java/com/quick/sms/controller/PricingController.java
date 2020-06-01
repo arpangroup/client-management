@@ -2,6 +2,7 @@ package com.quick.sms.controller;
 
 import com.quick.sms.documents.PricingBundle;
 import com.quick.sms.documents.PricingPlan;
+import com.quick.sms.dto.request.price.BundlePriceRequest;
 import com.quick.sms.service.PricingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,8 @@ public class PricingController {
     }
 
     @PostMapping("/bundle/create")
-    public PricingBundle createBundle(@Valid @RequestBody PricingBundle pricingBundle) throws Exception{
-        return pricingService.findOrCreate(pricingBundle);
+    public PricingBundle createBundle(@Valid @RequestBody BundlePriceRequest bundlePriceRequest) throws Exception{
+        return pricingService.createBundlePrice(bundlePriceRequest);
     }
 
     @PutMapping("/plan/delete/{id}")

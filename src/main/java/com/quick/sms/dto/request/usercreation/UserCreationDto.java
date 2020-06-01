@@ -63,7 +63,7 @@ public class UserCreationDto {
 
     @NotNull(message = "{errors.user.routeId.null}")
     @NotEmpty(message = "{errors.user.routeId.empty}")
-    private String creditType; //["PREPAID","POSTPAID"]
+    private String accountType; //["PREPAID","POSTPAID"]
     @NotNull(message = "{errors.user.routeId.null}")
     @NotEmpty(message = "{errors.user.routeId.empty}")
     private String creditDeductionType ="SUBMIT";// ["SUBMIT", "DELIVERY"]
@@ -80,7 +80,7 @@ public class UserCreationDto {
     @NotNull(message = "pricingId cant be null")
     @NotEmpty(message = "pricingId cant be empty")
     private String pricingId;
-    private float pricingAmount;
+    private int pricingAmount;
     private String bundlePriceId;
 
     private String creatorId;

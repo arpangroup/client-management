@@ -6,16 +6,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UpdateUserDetails {
+    private String clientId;
+    private String dltRegNo;
     private String gstNo;
-    private String website;
-    private String company;
-    private String address;
+    private String country;
     private String state;
+    private String address;
 
-    private boolean applyDndReturn = false;
-    private boolean applyDropping = false;
-    private int droppingPercentage = 0;
-
-
-
+    private String companyType;
+    private String companyName;
 }

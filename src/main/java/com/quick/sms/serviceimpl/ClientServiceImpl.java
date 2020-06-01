@@ -1,12 +1,17 @@
 package com.quick.sms.serviceimpl;
 
 import com.quick.sms.documents.*;
+import com.quick.sms.dto.ManageClient;
 import com.quick.sms.dto.authentication.ChangePasswordByOtpDto;
 import com.quick.sms.dto.authentication.ChangePasswordDto;
 import com.quick.sms.dto.authentication.ForgotPasswordDto;
 import com.quick.sms.dto.authentication.ResetPasswordDto;
+import com.quick.sms.dto.request.profileupdate.UpdateUserDetails;
 import com.quick.sms.dto.request.usercreation.SuperAdminCreation;
 import com.quick.sms.dto.request.usercreation.UserCreationDto;
+import com.quick.sms.dto.response.ClientDetailsResponse;
+import com.quick.sms.dto.response.ClientResponse;
+import com.quick.sms.dto.response.RouteResponse;
 import com.quick.sms.enums.UserType;
 import com.quick.sms.exception.ConflictException;
 import com.quick.sms.exception.IdNotFoundException;
@@ -99,6 +104,15 @@ public class ClientServiceImpl implements ClientService {
         //.setRoles(requestObj.getRoles());
         return clientRepository.save(superAdmin);
     }
+    private List<ClientResponse> filterClients(List<Client> clientList){
+        List<ClientResponse> clients = new ArrayList<>();
+        clientList.forEach(client->{
+            ClientResponse resp = new ClientResponse(client.getId(), client.getUserType(), client.getName(), client.getUserName(),client.getPhoneNumber(), client.getCreateDate(), client.getUpdateDate(), client.getStatus());
+            clients.add(resp);
+        });
+        return clients;
+
+    }
 
     private boolean filterInput(UserCreationDto input) throws Exception{
         // Validate UserType
@@ -108,7 +122,7 @@ public class ClientServiceImpl implements ClientService {
 
 
         if(!USER_TYPES.contains(input.getUserType().toUpperCase())) throw new InvalidParameterException("UserType must be anyone of [\"SUPER_ADMIN\", \"ADMIN\", \"RESELLER\", \"CLIENT\"]");
-        if(!CREDIT_TYPES.contains(input.getCreditType().toUpperCase())) throw new InvalidParameterException("CreditType must be anyone of [\"PREPAID\", \"POSTPAID\"]");
+        if(!CREDIT_TYPES.contains(input.getAccountType().toUpperCase())) throw new InvalidParameterException("CreditType must be anyone of [\"PREPAID\", \"POSTPAID\"]");
         if(!CREDIT_DEDUCTION_TYPES.contains(input.getCreditDeductionType().toUpperCase())) throw new InvalidParameterException("CreditType must be anyone of [\"SUBMIT\", \"DELIVERY\"]");
 
         return true;
@@ -140,7 +154,7 @@ public class ClientServiceImpl implements ClientService {
 
         // Step3: Check whether is prepaid or postpaid
         float creditLimit = 0.0f;
-        if(requestObj.getCreditType().toUpperCase().equals("POSTPAID")){
+        if(requestObj.getAccountType().toUpperCase().equals("POSTPAID")){
             if(requestObj.getCreditLimit() == 0.0) throw new InvalidParameterException("Credit limit should not be 0 for POSTPAID user");
             creditLimit = requestObj.getCreditLimit();
         }
@@ -163,22 +177,23 @@ public class ClientServiceImpl implements ClientService {
             else throw new InvalidParameterException("Invalid PriceAmount");
         }
 
-        Client client = new Client().build(requestObj, requestObj.getUserType(), routes, pricingPlan, pricingBundle, creator);
+        Client client = new Client().build(requestObj, requestObj.getUserType(), routes, pricingPlan, pricingBundle, requestObj.getCreatorId());
         return clientRepository.save(client);
     }
 
     @Override
-    public Client createClient(UserCreationDto dto) throws Exception{
+    public ClientDetailsResponse createClient(UserCreationDto dto) throws Exception{
         if(dto.getUserType().toLowerCase().equals("superadmin")){
             SuperAdminCreation superAdminCreation =  new SuperAdminCreation(dto.getUsername(), dto.getName(), dto.getPassword());
-            return createSuperAdmin(superAdminCreation);
+            return Client.build(createSuperAdmin(superAdminCreation));
         }else{
-            return createUser(dto);
+            return Client.build(createUser(dto));
         }
     }
 
+    /*
     @Override
-    public Client updateClient(InputRequest inputRequest) throws Exception {
+    public ClientDetailsResponse updateClient(InputRequest inputRequest) throws Exception {
         Map<String, String> payload = inputRequest.getPayload();
         Optional<Client> oldClientOptional = clientRepository.findById(payload.get("id"));
         oldClientOptional.orElseThrow(()->new IdNotFoundException("Invalid Client ID"));
@@ -199,7 +214,29 @@ public class ClientServiceImpl implements ClientService {
         if (payload.containsKey("city")) oldClient.getAddress().setCity(payload.get("city"));
         if (payload.containsKey("postalCode")) oldClient.getAddress().setPostalCode(payload.get("postalCode"));
 
-       return clientRepository.save(oldClient);
+       Client client = clientRepository.save(oldClient);
+       return Client.build(client);
+    }
+
+     */
+
+    @Override
+    public ClientDetailsResponse updateClient(UpdateUserDetails payload) throws Exception {
+        Optional<Client> oldClientOptional = clientRepository.findById(payload.getClientId());
+        oldClientOptional.orElseThrow(()->new IdNotFoundException("Invalid Client ID"));
+        Client oldClient = oldClientOptional.get();
+
+
+        if(payload.getCompanyName() != null) oldClient.setCompany(payload.getCompanyName());
+        if(payload.getCompanyType() != null) oldClient.setCompanyType(payload.getCompanyType());
+
+        Address address = oldClient.getAddress();
+        address.setCountry(payload.getCountry()).setState(payload.getState()).setAddress(payload.getAddress());
+        oldClient.setGstno(payload.getGstNo());
+        oldClient.setAddress(address);
+
+        Client client = clientRepository.save(oldClient);
+        return Client.build(client);
     }
 
     @Override
@@ -210,11 +247,15 @@ public class ClientServiceImpl implements ClientService {
         Optional<Client> clientOptional = clientRepository.findByUserNameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
         if(clientOptional.isPresent()) {
 
-            Map<String, String> response = new HashMap<>();
+            List<RouteResponse> routes = clientOptional.get().getAssignRoute().stream().map(Route::build).collect(Collectors.toList());
+
+            Map<String, Object> response = new HashMap<>();
             response.put("message", "Login Success");
             response.put("id", clientOptional.get().getId());
             response.put("userType", clientOptional.get().getUserType());
-            response.put("userType", clientOptional.get().getUserType());
+            response.put("droppingAccessApplicableToChild", clientOptional.get().isDroppingAccessApplicableToChild());
+            response.put("accountType", clientOptional.get().getAccountType());
+            response.put("assignRoute", routes);
 
 
             return new Response(true, 200, response, "jhgjgjgjgjgjgjjfhfhfhfhfhfhf");
@@ -222,23 +263,39 @@ public class ClientServiceImpl implements ClientService {
         return new Response(false, 400, "Login fail", null);
     }
 
+
+
     @Override
-    public List<Client> getAllClients() {
-        return clientRepository.findAll();
+    public List<ClientResponse> getAllClients() {
+        List<Client> clients = clientRepository.findAll();
+        return filterClients(clients);
     }
 
     @Override
-    public List<Client> getAllClientsByUserType(String userType) {
-        return clientRepository.findByUserType(userType);
+    public List<ClientResponse> getAllClientsByUserType(String userType) {
+        List<Client> clients = clientRepository.findByUserType(userType);
+        return filterClients(clients);
     }
 
     @Override
-    public Client getClientByIdAndType(String userId, String userType) throws Exception {
-        return clientRepository.findByIdAndUserType(userId, userType).orElseThrow(()->new InvalidParameterException("Invalid UserId or UserType"));
+    public List<ClientResponse> getAllClientsUnderParentId(String parentId)throws Exception{
+        List<Client> clients = clientRepository.findByCreatedBy(parentId);
+        return filterClients(clients);
     }
 
     @Override
-    public Client getClientById(String userId) throws Exception {
+    public ClientDetailsResponse getClientByIdAndType(String userId, String userType) throws Exception {
+        Client client = clientRepository.findByIdAndUserType(userId, userType).orElseThrow(()->new InvalidParameterException("Invalid UserId or UserType"));
+        return Client.build(client);
+    }
+
+    @Override
+    public ClientDetailsResponse getClientById(String userId) throws Exception {
+        Client client = clientRepository.findById(userId).orElseThrow(()->new IdNotFoundException("Invalid UserId"));
+        return Client.build(client);
+    }
+
+    public Client getClientByClientId(String userId) throws Exception {
         return clientRepository.findById(userId).orElseThrow(()->new IdNotFoundException("Invalid UserId"));
     }
 
@@ -340,6 +397,37 @@ public class ClientServiceImpl implements ClientService {
         client.setPassword(newPassword);
         clientRepository.save(client);
         return "Password reset successful";
+    }
+
+    @Override
+    public Boolean blockUser(ManageClient manageClient) throws Exception {
+        Client client = getClientByClientId(manageClient.getClientId());
+
+        if(manageClient.isStatus()) client.setBlocked(true).setStatus("BLOCKED");
+        else client.setBlocked(false).setStatus("UN-BLOCKED");
+        clientRepository.save(client);
+
+        return true;
+    }
+
+    @Override
+    public Boolean deleteUser(ManageClient manageClient) throws Exception {
+        Client client = getClientByClientId(manageClient.getClientId());
+
+        if(manageClient.isStatus()) client.setDeleted(true).setStatus("DELETED");
+        else client.setBlocked(false).setStatus("ACTIVE");
+        clientRepository.save(client);
+        return true;
+    }
+
+    @Override
+    public Boolean activateUser(ManageClient manageClient) throws Exception {
+        Client client = getClientByClientId(manageClient.getClientId());
+
+        if(manageClient.isStatus()) client.setActive(true).setStatus("ACTIVE");
+        else client.setBlocked(false).setStatus("INACTIVE");
+        clientRepository.save(client);
+        return true;
     }
 
 

@@ -7,6 +7,8 @@ import com.quick.sms.dto.authentication.ChangePasswordByOtpDto;
 import com.quick.sms.dto.authentication.ChangePasswordDto;
 import com.quick.sms.dto.authentication.ForgotPasswordDto;
 import com.quick.sms.dto.authentication.ResetPasswordDto;
+import com.quick.sms.dto.request.price.BundlePriceRequest;
+import com.quick.sms.dto.response.price.BundlePriceResponse;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public interface PricingService {
    public List<PricingPlan> findAllPricing(String userId) throws Exception;
    public void deletePlan(String id) throws Exception;
     // Bundle
-    public PricingBundle findOrCreate(PricingBundle bundle) throws Exception;
+    public PricingBundle createBundlePrice(BundlePriceRequest bundlePriceRequest) throws Exception;
     public PricingBundle findByBundleIdAndUserId(String bundleId, String userId) throws Exception;
     public PricingBundle findByBundleId(String bundleId) throws Exception;
     public List<PricingBundle> findAllBundle(String userId) throws Exception;

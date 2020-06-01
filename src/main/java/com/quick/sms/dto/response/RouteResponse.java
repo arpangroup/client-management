@@ -7,7 +7,14 @@ import lombok.experimental.Accessors;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Route {
+public class RouteResponse {
     private String id;
     private String routeName;
+
+    public RouteResponse(String id, String routeName) {
+        this.id = id;
+        this.routeName = routeName;
+    }
 }
+
+

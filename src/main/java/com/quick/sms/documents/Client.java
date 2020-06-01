@@ -2,13 +2,19 @@ package com.quick.sms.documents;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.quick.sms.dto.request.usercreation.UserCreationDto;
+import com.quick.sms.dto.response.ClientDetailsResponse;
+import com.quick.sms.dto.response.RouteResponse;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.bson.codecs.pojo.annotations.BsonIgnore;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -42,7 +48,7 @@ public class Client implements Serializable {
 	private String gstno;
 	private boolean gstInclusive = false; //<=======()()############()()===============================[ARPAN]
 	//CREDIT_CONTROL:
-	private String creditType; // prepaid / postpaid
+	private String accountType; // prepaid / postpaid
 	private String creditDeductionType ="SUBMIT";// ["SUBMIT", "DELIVERED"] <===> private String billingType; // Submit / Delivery
 	private float creditLimit=0.0f; // If user select postpaid
 	//DND_AND_DROPPING
@@ -54,6 +60,8 @@ public class Client implements Serializable {
 	private boolean bundlePriceApplicable = true; //otherwise BundlePrice will apply<=======()()############()()===============================[ARPAN]
 	private PricingPlan pricing;
 	private PricingBundle bundle;
+	//wallet
+	private Wallet wallet;
 	//DLT_REGISTRATION_DATA
 //	@BsonIgnore
 //	private DLTRegistration dltRegistration;
@@ -66,26 +74,28 @@ public class Client implements Serializable {
 	//private String apiKey;
 	//private String price;
 
-	private Boolean isDeleted;
+	@CreatedDate
+	private Date createDate;
 	private String createdBy;
-	private LocalDateTime createdTime;
+	@LastModifiedDate
+	private Date updateDate;
 	private String updatedBy;
-	private LocalDateTime updatedTime;
-	private String status;
+
+	private Boolean deleted = false;
+	private Boolean blocked = false;
+	private Boolean active = false;
+	private String status = "ACTIVE";
 	//private Binary avatar;
 	//private String avatarFileName;
 	//private String avatarFileType;
 
 
-	//@BsonIgnore
-	//private Long totalCredits;
-	//@BsonIgnore
-	//private Long usedCredits;
-
-	public Client build(UserCreationDto requestObj, String userType, List<Route> route, PricingPlan pricingPlan, PricingBundle pricingBundle, Client creator){
+	public Client build(UserCreationDto requestObj, String userType, List<Route> route, PricingPlan pricingPlan, PricingBundle pricingBundle, String creatorId){
 		float creditLimit = 0.0f;
-		if(requestObj.getCreditType().toUpperCase().equals("POSTPAID"))
+		if(requestObj.getAccountType().toUpperCase().equals("POSTPAID"))
 			creditLimit = requestObj.getCreditLimit();
+
+		Wallet wallet = new Wallet(10, 0, 0.0, true);
 
 		Client client = new Client()
 				.setUserType(userType)
@@ -105,7 +115,7 @@ public class Client implements Serializable {
 				.setGstInclusive(requestObj.isGstInclusive())
 				//.setRoles(requestObj.getRoles())
 				//Prepaid User
-				.setCreditType(requestObj.getCreditType())
+				.setAccountType(requestObj.getAccountType())
 				.setCreditDeductionType(requestObj.getCreditDeductionType())
 				.setCreditLimit(creditLimit)
 				.setApplyDndReturn(requestObj.isApplyDndReturn())
@@ -115,11 +125,44 @@ public class Client implements Serializable {
 				.setBundlePriceApplicable(requestObj.isBundlePriceApplicable())
 				.setPricing(pricingPlan)
 				.setBundle(pricingBundle)
-				.setCreatedBy(creator.getCreatedBy())
+				.setWallet(wallet)
+				.setCreatedBy(creatorId)
 				//Only for Postpaid user
 				.setCreditLimit(requestObj.getCreditLimit());
 
 		return client;
 	}
 
+	public static ClientDetailsResponse build(Client obj){
+		List<RouteResponse> routeResponses = obj.getAssignRoute().stream().map(Route::build).collect(Collectors.toList());
+
+		return new ClientDetailsResponse()
+				.setId(obj.getId())
+				.setUserType(obj.getUserType())
+				.setName(obj.getName())
+				.setEmail(obj.getEmail())
+				.setUserName(obj.getUserName())
+				.setPassword(obj.getPassword())
+				.setPhoneNumber(obj.getPhoneNumber())
+				.setRoutes(routeResponses)
+				.setAddress(obj.getAddress())
+				.setWebsite(obj.getWebsite())
+				.setCompany(obj.getCompany())
+				.setCompanyType(obj.getCompanyType())
+				.setGstno(obj.getGstno())
+				.setGstInclusive(obj.isGstInclusive())
+				//Prepaid User
+				.setAccountType(obj.getAccountType())
+				.setCreditDeductionType(obj.getCreditDeductionType())
+				.setCreditLimit(obj.getCreditLimit())
+				.setApplyDndReturn(obj.isApplyDndReturn())
+				.setApplyDropping(obj.isApplyDropping())
+				.setDroppingPercentage(obj.getDroppingPercentage())
+				.setDroppingAccessApplicableToChild(obj.isDroppingAccessApplicableToChild())
+				//.setPricing(pricingPlan)
+				.setWallet(obj.getWallet())
+				.setCreateDate(obj.getCreateDate())
+				.setUpdateDate(obj.getUpdateDate())
+				.setStatus(obj.getStatus());
+	}
 }
