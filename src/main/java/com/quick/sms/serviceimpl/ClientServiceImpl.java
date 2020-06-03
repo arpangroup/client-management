@@ -107,7 +107,7 @@ public class ClientServiceImpl implements ClientService {
     private List<ClientResponse> filterClients(List<Client> clientList){
         List<ClientResponse> clients = new ArrayList<>();
         clientList.forEach(client->{
-            ClientResponse resp = new ClientResponse(client.getId(), client.getUserType(), client.getName(), client.getUserName(),client.getPhoneNumber(), client.getCreateDate(), client.getUpdateDate(), client.getStatus());
+            ClientResponse resp = new ClientResponse(client.getId(), client.getUserType(), client.getName(), client.getUserName(),client.getPhoneNumber(), client.getWallet().getTotalCredit(), client.getWallet().getUsedCredit(), client.getCreateDate(), client.getUpdateDate(), client.getStatus());
             clients.add(resp);
         });
         return clients;
@@ -172,7 +172,7 @@ public class ClientServiceImpl implements ClientService {
             if(bundle.isPresent()) pricingBundle = bundle.get();
         }else{
             PricingPlan pricingObj = pricingService.findByPricingId(requestObj.getPricingId());
-            if(pricingObj.getPriceInPaisa() != requestObj.getPricingAmount())
+            if(pricingObj.getFixedPriceInPaisa() != requestObj.getPricingAmount())
                 pricingPlan = pricingService.findOrCreate(new PricingPlan(requestObj.getCreatorId(), requestObj.getPricingAmount(), pricingObj.getPlanName(), pricingObj.getGstPercentage()));
             else throw new InvalidParameterException("Invalid PriceAmount");
         }
@@ -240,34 +240,9 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Response loginClient(LoginRequest loginRequest) throws Exception{
-        System.out.println("==================LOGIN=========================");
-        System.out.println(loginRequest);
-        System.out.println("==================LOGIN=========================");
-        Optional<Client> clientOptional = clientRepository.findByUserNameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
-        if(clientOptional.isPresent()) {
-
-            List<RouteResponse> routes = clientOptional.get().getAssignRoute().stream().map(Route::build).collect(Collectors.toList());
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("message", "Login Success");
-            response.put("id", clientOptional.get().getId());
-            response.put("userType", clientOptional.get().getUserType());
-            response.put("droppingAccessApplicableToChild", clientOptional.get().isDroppingAccessApplicableToChild());
-            response.put("accountType", clientOptional.get().getAccountType());
-            response.put("assignRoute", routes);
-
-
-            return new Response(true, 200, response, "jhgjgjgjgjgjgjjfhfhfhfhfhfhf");
-        }
-        return new Response(false, 400, "Login fail", null);
-    }
-
-
-
-    @Override
     public List<ClientResponse> getAllClients() {
         List<Client> clients = clientRepository.findAll();
+        clients = clients.stream().filter(client -> !client.getUserType().equals("SUPER_ADMIN")).collect(Collectors.toList());// Because first client is SUPER_ADMIN
         return filterClients(clients);
     }
 
@@ -314,10 +289,6 @@ public class ClientServiceImpl implements ClientService {
         return null;
     }
 
-    @Override
-    public void deleteClient(String clientId) {
-
-    }
 
     @Override
     public void updateClientSmsLimit() {
@@ -328,107 +299,5 @@ public class ClientServiceImpl implements ClientService {
     public void updateStatus(String clientId, String status) {
 
     }
-
-    @Override
-    public String forgotPassword(ForgotPasswordDto dto) throws Exception{
-        if(dto.getPhone() != null){
-            //Step1: Authenticate whether the provided mobile number or email is valid or not
-            List<Client> clients = clientRepository.findUserByPhoneNumberAndId(dto.getPhone(), dto.getClientId());
-            if(clients == null) throw new InvalidParameterException("Invalid ID or Mobile Number");
-            Client client = clients.get(0);
-
-            // Step2: Generate Random OTP and send using SMS Service
-            Integer otpNumber = 10000 + new Random( System.currentTimeMillis() ).nextInt(20000); //generate 5-digit random OTP
-            Otp otp = new Otp(dto.getClientId(), dto.getPhone(),otpNumber+"", 0);
-            String message = "Dear user your OTP for resetting the password is"+otp;
-            //boolean messageSent = sendMessage(authentication, dto.getPhone(), message);
-
-            // Step3: Insert the OTP data into database
-            //if(messageSent) otpRepository.save(otp);
-            return "OTP has successfully send to register mobile number";
-
-        }else{
-            // Send OTP to email
-            return "Resetting password by mail functionality is not available now";
-        }
-    }
-
-    @Override
-    public String changePasswordAfterLogin(ChangePasswordDto dto) throws Exception {
-        // Step1: Check whether requested user exist or not using old-password and memberId
-        List<Client> clients = clientRepository.findUserByPasswordAndId(dto.getOldPassword(), dto.getUserId());
-        if(clients == null) throw new InvalidParameterException("Invalid Old Password");
-        Client client = clients.get(0);
-
-        // Step2: Update the modified record into database
-        client.setPassword(dto.getNewPassword());
-        clientRepository.save(client);
-        return "Password changed successfully";
-    }
-
-    @Override
-    public String changePasswordBeforeLogin(ChangePasswordByOtpDto dto) throws Exception {
-        // Step1: Check whether requested user exist or not using old-password and memberId
-        Optional<Otp> otpOptional = otpRepository.findByOtp(dto.getOtp());
-        otpOptional.orElseThrow(()-> new IdNotFoundException("Invalid OTP"));
-        Otp otp = otpOptional.get();
-        Client client = clientRepository.findById(otp.getClientId()).get();
-
-        // Step2: Update the modified record into database
-        client.setPassword(dto.getNewPassword());
-        clientRepository.save(client);
-
-        // Step3: Invalidate the used OTP
-        otp.setIsUsed(1);
-        otp.setUpdateDate(new Date());
-        otpRepository.save(otp);
-
-        return "Password changed successfully";
-    }
-
-    @Override
-    public String resetPassword(ResetPasswordDto dto) throws Exception {
-        Optional<Client> clientOptional = clientRepository.findById(dto.getClientId());
-        clientOptional.orElseThrow(()-> new IdNotFoundException("Invalid ClientID"));
-        Client client = clientOptional.get();
-
-        String newPassword = "password";
-        if(dto.getResetPassword() != null) newPassword = dto.getResetPassword();
-        client.setPassword(newPassword);
-        clientRepository.save(client);
-        return "Password reset successful";
-    }
-
-    @Override
-    public Boolean blockUser(ManageClient manageClient) throws Exception {
-        Client client = getClientByClientId(manageClient.getClientId());
-
-        if(manageClient.isStatus()) client.setBlocked(true).setStatus("BLOCKED");
-        else client.setBlocked(false).setStatus("UN-BLOCKED");
-        clientRepository.save(client);
-
-        return true;
-    }
-
-    @Override
-    public Boolean deleteUser(ManageClient manageClient) throws Exception {
-        Client client = getClientByClientId(manageClient.getClientId());
-
-        if(manageClient.isStatus()) client.setDeleted(true).setStatus("DELETED");
-        else client.setBlocked(false).setStatus("ACTIVE");
-        clientRepository.save(client);
-        return true;
-    }
-
-    @Override
-    public Boolean activateUser(ManageClient manageClient) throws Exception {
-        Client client = getClientByClientId(manageClient.getClientId());
-
-        if(manageClient.isStatus()) client.setActive(true).setStatus("ACTIVE");
-        else client.setBlocked(false).setStatus("INACTIVE");
-        clientRepository.save(client);
-        return true;
-    }
-
 
 }

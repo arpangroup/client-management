@@ -28,13 +28,13 @@ public class PricingServiceImpl implements PricingService {
     @Transactional
     public PricingPlan findOrCreate(PricingPlan pricing) throws Exception {
         if(pricing.getId() != null){
-            Optional<PricingPlan> pricingPlan = pricingPlanRepository.findByIdAndPriceInPaisa(pricing.getId(), pricing.getPriceInPaisa());
+            Optional<PricingPlan> pricingPlan = pricingPlanRepository.findByIdAndFixedPriceInPaisa(pricing.getId(), pricing.getFixedPriceInPaisa());
             // If same price amount is exist then no need of creating new Pricing
             if(pricingPlan.isPresent()) return pricingPlan.get();
-            PricingPlan pricingObj = new PricingPlan(pricing.getCreatedUserId(), pricing.getPriceInPaisa(), pricing.getPlanName(),pricing.getGstPercentage());
+            PricingPlan pricingObj = new PricingPlan(pricing.getCreatedUserId(), pricing.getFixedPriceInPaisa(), pricing.getPlanName(),pricing.getGstPercentage());
             return pricingPlanRepository.save(pricingObj);
         }else{
-            PricingPlan pricingObj = new PricingPlan(pricing.getCreatedUserId(), pricing.getPriceInPaisa(), pricing.getPlanName(),pricing.getGstPercentage());
+            PricingPlan pricingObj = new PricingPlan(pricing.getCreatedUserId(), pricing.getFixedPriceInPaisa(), pricing.getPlanName(),pricing.getGstPercentage());
             return pricingPlanRepository.save(pricingObj);
         }
     }

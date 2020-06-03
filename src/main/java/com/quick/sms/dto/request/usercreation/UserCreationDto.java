@@ -42,7 +42,7 @@ public class UserCreationDto {
     //private String roles;
 
 
-    @Size(min = 10, max = 10, message = "phoneNumber must be of 10 digits")
+    @Size(min = 10, max = 15, message = "phoneNumber must be of 10 digits")
     @NotNull(message = "phoneNumber cant be null")
     @NotEmpty(message = "phoneNumber cant be empty")
     private String phoneNumber;

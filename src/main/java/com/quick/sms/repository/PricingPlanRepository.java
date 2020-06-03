@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PricingPlanRepository extends MongoRepository<PricingPlan, String> {
-    Optional<PricingPlan> findByIdAndPriceInPaisa(String id, float priceAmount);
+    Optional<PricingPlan> findByIdAndFixedPriceInPaisa(String id, int priceAmount);
     Optional<PricingPlan> findByIdAndCreatedUserId(String pricingId, String creatorId);
     List<PricingPlan> findAllByCreatedUserId(String userId);
 }

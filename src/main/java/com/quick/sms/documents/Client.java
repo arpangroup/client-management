@@ -75,10 +75,10 @@ public class Client implements Serializable {
 	//private String price;
 
 	@CreatedDate
-	private Date createDate;
+	private Date createDate = new Date();
 	private String createdBy;
 	@LastModifiedDate
-	private Date updateDate;
+	private Date updateDate = new Date();
 	private String updatedBy;
 
 	private Boolean deleted = false;
@@ -96,6 +96,13 @@ public class Client implements Serializable {
 			creditLimit = requestObj.getCreditLimit();
 
 		Wallet wallet = new Wallet(10, 0, 0.0, true);
+		Address address = new Address()
+				.setCountry("INDIA")
+				.setState("")
+				.setCity("")
+				.setPostalCode("")
+				.setPhoneNumber(requestObj.getPhoneNumber())
+				.setAddress("");
 
 		Client client = new Client()
 				.setUserType(userType)
@@ -105,7 +112,7 @@ public class Client implements Serializable {
 				.setPassword(requestObj.getPassword())
 				.setPhoneNumber(requestObj.getPhoneNumber())
 				.setAssignRoute(route)
-				//.setAddress(requestObj.getA)
+				.setAddress(address)
 				//.setWebsite(requestObj.getWebsite())
 				.setCompany(requestObj.getCompany())
 				.setCompanyType(requestObj.getCompanyType())

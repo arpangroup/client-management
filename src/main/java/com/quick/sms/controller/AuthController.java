@@ -9,6 +9,7 @@ import com.quick.sms.dto.authentication.ResetPasswordDto;
 import com.quick.sms.dto.response.RouteResponse;
 import com.quick.sms.repository.ClientRepository;
 import com.quick.sms.repository.RouteRepository;
+import com.quick.sms.service.AuthService;
 import com.quick.sms.service.ClientService;
 import com.quick.sms.service.RouteService;
 import com.quick.sms.vo.InputRequest;
@@ -32,46 +33,46 @@ import java.util.List;
 @Slf4j
 public class AuthController {
 	@Autowired
-	ClientService clientService;
+	AuthService authService;
 
 	@PostMapping("/login")
 	public Response login(@Valid @RequestBody LoginRequest loginRequest) throws Exception{
-		return clientService.loginClient(loginRequest);
+		return authService.loginClient(loginRequest);
 	}
 
 	@PostMapping("password/forgot")
 	public String forgotPassword(@Valid @RequestBody Authentication authentication, ForgotPasswordDto forgotPasswordDto) throws Exception{
-		return clientService.forgotPassword(forgotPasswordDto);
+		return authService.forgotPassword(forgotPasswordDto);
 	}
 
 	@PostMapping("password/change")
 	public String changePasswordAfterLogin(@Valid @RequestBody ChangePasswordDto changePasswordDto) throws Exception{
-		return clientService.changePasswordAfterLogin(changePasswordDto);
+		return authService.changePasswordAfterLogin(changePasswordDto);
 	}
 
 	@PostMapping("password/change/by_otp")
 	public String changePasswordBeforeLogin(@Valid @RequestBody ChangePasswordByOtpDto dto) throws Exception{
-		return clientService.changePasswordBeforeLogin(dto);
+		return authService.changePasswordBeforeLogin(dto);
 	}
 
 	@PostMapping("password/reset")
 	public String resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto) throws Exception{
-		return clientService.resetPassword(resetPasswordDto);
+		return authService.resetPassword(resetPasswordDto);
 	}
 
 
 	@PostMapping("/blockUser")
 	public ResponseEntity blockUser(@Valid @RequestBody ManageClient manageClient) throws Exception{		;
-		return new ResponseEntity(clientService.blockUser(manageClient), HttpStatus.OK);
+		return new ResponseEntity(authService.blockUser(manageClient), HttpStatus.OK);
 	}
 
 	@PostMapping("/deleteUser")
 	public ResponseEntity deleteUser(@Valid @RequestBody ManageClient manageClient) throws Exception{
-		return new ResponseEntity(clientService.deleteUser(manageClient), HttpStatus.OK);
+		return new ResponseEntity(authService.deleteUser(manageClient), HttpStatus.OK);
 	}
 
 	@PostMapping("/activateUser")
 	public ResponseEntity activateUser(@Valid @RequestBody ManageClient manageClient) throws Exception{
-		return new ResponseEntity(clientService.activateUser(manageClient), HttpStatus.OK);
+		return new ResponseEntity(authService.activateUser(manageClient), HttpStatus.OK);
 	}
 }

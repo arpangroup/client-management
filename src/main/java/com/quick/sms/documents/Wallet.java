@@ -8,14 +8,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
-@Document
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
 public class Wallet implements Serializable {
 	private static final long serialVersionUID = -101947256442830320L;
-	@Id
-	private String id;
 	private int totalCredit;
 	private int usedCredit;
 	private double openingBalance;

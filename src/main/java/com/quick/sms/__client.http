@@ -1,0 +1,68 @@
+//GetAllClients()
+GET http://localhost:8081/getAllClients
+
+###
+
+
+// GetClientDetails(clientId)
+GET http://localhost:8081/getClientDetails/5ed73ea5552acf56da832643
+
+###
+
+//getAllClientsUnderParentId(parentId)
+GET http://localhost:8081/getAllClients/1
+
+###
+
+
+
+POST http://localhost:8081/addClient
+Content-Type: application/json
+
+{
+  "userType": "ADMIN",
+  "name": "John Doe",
+  "email": "john@doe.com",
+  "username": "john_doe",
+  "password": "password",
+  "phoneNumber": "1234567890",
+  "routeIdList": ["1"],
+  "website": "john.com",
+  "company": "John Pvt Ltd.",
+  "companyType": "Pvt Ltd.",
+  "gstno": "GST123456",
+  "isGstInclusive": false,
+  "accountType": "PREPAID",
+  "creditDeductionType": "SUBMIT",
+  "creditLimit": 100,
+  "applyDndReturn": true,
+  "applyDropping": true,
+  "droppingPercentage": 10,
+  "droppingAccessApplicableToChild": true,
+  "isBundlePriceApplicable": false,
+  "pricingId": "demo_p1",
+  "pricingAmount": 10,
+  "bundlePriceId": "",
+  "creatorId": "1"
+
+}
+
+
+###
+
+
+PUT http://localhost:8081/updateClient
+Content-Type: application/json
+
+{
+  "clientId": "5ed73ea5552acf56da832643",
+  "dltRegNo": "UPDATED",
+  "gstNo": "UPDATED",
+  "country": "UPDATED",
+  "state": "UPDATED",
+  "address": "UPDATED",
+  "companyType": "UPDATED",
+  "companyName": "UPDATED"
+}
+
+###

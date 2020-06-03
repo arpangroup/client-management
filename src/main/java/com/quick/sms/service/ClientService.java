@@ -46,8 +46,6 @@ import lombok.extern.slf4j.Slf4j;
 public interface ClientService {
     public ClientDetailsResponse createClient(UserCreationDto userCreationDto) throws Exception;
     public ClientDetailsResponse updateClient(UpdateUserDetails updateUserDetails) throws Exception;
-    public Response loginClient(LoginRequest loginRequest) throws Exception;
-
 
     public List<ClientResponse> getAllClients();
     public List<ClientResponse> getAllClientsByUserType(String userType);
@@ -58,19 +56,8 @@ public interface ClientService {
     public List<SupportTicket> getClientSupportTickets(String clientId);
     public List<Invoice> getClientInvoices(String clientId);
     public List<SmsTransaction> getClientSmsTransactions(String clientId);
-    public void deleteClient(String clientId);
 
     public void updateClientSmsLimit();
     public void updateStatus(String clientId, String status);
 
-
-    public String forgotPassword(ForgotPasswordDto dto) throws Exception;
-    public String changePasswordAfterLogin(ChangePasswordDto dto) throws Exception;
-    public String changePasswordBeforeLogin(ChangePasswordByOtpDto dto) throws Exception;
-    public String resetPassword(ResetPasswordDto dto) throws Exception;
-
-
-    public Boolean blockUser(ManageClient manageClient) throws Exception;
-    public Boolean deleteUser(ManageClient manageClient) throws Exception;
-    public Boolean activateUser(ManageClient manageClient) throws Exception;
 }

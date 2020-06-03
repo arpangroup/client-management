@@ -47,15 +47,15 @@ public class PricingPlan implements Serializable {
 
 
     private String planName;
-    private int priceInPaisa = 1;
+    private int fixedPriceInPaisa = 1;
     private float gstPercentage;
     private float netPrice = 0.0f;
     private String hsnNo;
     private String createdUserId;
 
-    public PricingPlan(String createdUserId, int priceInPaisa, String planName, float gstPercentage) {
+    public PricingPlan(String createdUserId, int fixedPriceInPaisa, String planName, float gstPercentage) {
         this.createdUserId = createdUserId;
-        this.priceInPaisa = priceInPaisa;
+        this.fixedPriceInPaisa = fixedPriceInPaisa;
         this.planName = planName;
         this.gstPercentage = gstPercentage;
     }
