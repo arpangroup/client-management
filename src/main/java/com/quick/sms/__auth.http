@@ -1,5 +1,6 @@
 
-POST http://localhost:8081/auth/login
+#POST http://localhost:8081/auth/login
+POST http://134.209.148.127:8081/auth/login
 Content-Type: application/json
 
 {

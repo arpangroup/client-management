@@ -3,6 +3,11 @@ GET http://localhost:8081/getAllClients
 
 ###
 
+#GET http://134.209.148.127:8081/getAllClients
+GET http://localhost:8081/getAllClients
+
+###
+
 
 // GetClientDetails(clientId)
 GET http://localhost:8081/getClientDetails/5ed73ea5552acf56da83263d
