@@ -15,6 +15,6 @@ public class ResetPasswordDto {
     @NotEmpty(message = "Client ID can not be empty")
     private String clientId;
 
-    private String resetPassword;
+    //private String resetPassword;
 
 }

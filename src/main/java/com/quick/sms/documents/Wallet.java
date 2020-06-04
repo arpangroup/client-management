@@ -13,15 +13,15 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class Wallet implements Serializable {
 	private static final long serialVersionUID = -101947256442830320L;
-	private int totalCredit;
-	private int usedCredit;
-	private double openingBalance;
+	private double openingCredit;
+	private double closingCredit;
+	private double usedCredit;
 	private boolean active;
 
-	public Wallet(int totalCredit, int usedCredit, double openingBalance, boolean active) {
-		this.totalCredit = totalCredit;
+	public Wallet(int openingCredit, int closingCredit, double usedCredit, boolean active) {
+		this.openingCredit = openingCredit;
+		this.closingCredit = closingCredit;
 		this.usedCredit = usedCredit;
-		this.openingBalance = openingBalance;
 		this.active = active;
 	}
 }

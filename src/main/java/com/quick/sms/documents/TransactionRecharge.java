@@ -25,24 +25,26 @@ public class TransactionRecharge implements Serializable {
 	private int noOfCredits;
 	private double rechargeAmount;
 	private double openingBalance;
+	private double closingBalance;
 	private String rechargeGateway;
 	private String refNo;
 
 	@CreatedDate
-	private Date createDate;
+	private Date createDate = new Date();
 	@LastModifiedBy
 	private String createdBy;
 	@LastModifiedDate
-	private Date updateDate;
+	private Date updateDate = new Date();
 	@LastModifiedBy
 	private String updateBy;
 
 
-	public TransactionRecharge(String clientId, int noOfCredits, double rechargeAmount, double openingBalance, String rechargeGateway,String refNo) {
+	public TransactionRecharge(String clientId, int noOfCredits, double rechargeAmount, double openingBalance, double closingBalance, String rechargeGateway,String refNo) {
 		this.clientId = clientId;
 		this.noOfCredits = noOfCredits;
 		this.rechargeAmount = rechargeAmount;
 		this.openingBalance = openingBalance;
+		this.closingBalance = closingBalance;
 		this.rechargeGateway = rechargeGateway;
 		this.refNo = refNo;
 	}

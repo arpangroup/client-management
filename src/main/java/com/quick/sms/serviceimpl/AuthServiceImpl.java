@@ -13,6 +13,7 @@ import com.quick.sms.dto.response.ClientDetailsResponse;
 import com.quick.sms.dto.response.ClientResponse;
 import com.quick.sms.dto.response.RouteResponse;
 import com.quick.sms.enums.UserType;
+import com.quick.sms.exception.AuthenticationErrorException;
 import com.quick.sms.exception.ConflictException;
 import com.quick.sms.exception.IdNotFoundException;
 import com.quick.sms.exception.InvalidParameterException;
@@ -50,18 +51,21 @@ public class AuthServiceImpl implements AuthService {
         System.out.println("==================LOGIN=========================");
         Optional<Client> clientOptional = clientRepository.findByUserNameAndPassword(loginRequest.getUsername(), loginRequest.getPassword());
         if(clientOptional.isPresent()) {
+            if(!clientOptional.get().getStatus().equals("ACTIVE")) throw new AuthenticationErrorException("User DeActivated");
+            ClientDetailsResponse clientDetailsResponse = Client.build(clientOptional.get());
 
-            List<RouteResponse> routes = clientOptional.get().getAssignRoute().stream().map(Route::build).collect(Collectors.toList());
+            //List<RouteResponse> routes = clientOptional.get().getAssignRoute().stream().map(Route::build).collect(Collectors.toList());
 
             Map<String, Object> response = new HashMap<>();
             response.put("message", "Login Success");
-            response.put("id", clientOptional.get().getId());
-            response.put("userType", clientOptional.get().getUserType());
-            response.put("droppingAccessApplicableToChild", clientOptional.get().isDroppingAccessApplicableToChild());
-            response.put("accountType", clientOptional.get().getAccountType());
-            response.put("assignRoute", routes);
-            response.put("wallet", clientOptional.get().getWallet());
+//            response.put("id", clientOptional.get().getId());
+//            response.put("userType", clientOptional.get().getUserType());
+//            response.put("droppingAccessApplicableToChild", clientOptional.get().isDroppingAccessApplicableToChild());
+//            response.put("accountType", clientOptional.get().getAccountType());
+//            response.put("assignRoute", routes);
+//            response.put("wallet", clientOptional.get().getWallet());
 
+            response.put("client", clientDetailsResponse);
 
             return new Response(true, 200, response, "jhgjgjgjgjgjgjjfhfhfhfhfhfhf");
         }
@@ -83,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
             //boolean messageSent = sendMessage(authentication, dto.getPhone(), message);
 
             // Step3: Insert the OTP data into database
-            //if(messageSent) otpRepository.save(otp);
+            // if(messageSent) otpRepository.save(otp);
             return "OTP has successfully send to register mobile number";
 
         }else{
@@ -95,9 +99,9 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String changePasswordAfterLogin(ChangePasswordDto dto) throws Exception {
         // Step1: Check whether requested user exist or not using old-password and memberId
-        List<Client> clients = clientRepository.findUserByPasswordAndId(dto.getOldPassword(), dto.getUserId());
-        if(clients == null) throw new InvalidParameterException("Invalid Old Password");
-        Client client = clients.get(0);
+        Optional<Client> clientOptional = clientRepository.findUserByPasswordAndId(dto.getOldPassword(), dto.getUserId());
+        if(!clientOptional.isPresent()) throw new InvalidParameterException("Invalid Old Password");
+        Client client = clientOptional.get();
 
         // Step2: Update the modified record into database
         client.setPassword(dto.getNewPassword());
@@ -132,7 +136,7 @@ public class AuthServiceImpl implements AuthService {
         Client client = clientOptional.get();
 
         String newPassword = "password";
-        if(dto.getResetPassword() != null) newPassword = dto.getResetPassword();
+       // if(dto.getResetPassword() != null) newPassword = dto.getResetPassword();
         client.setPassword(newPassword);
         clientRepository.save(client);
         return "Password reset successful";

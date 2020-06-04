@@ -48,15 +48,30 @@ public class PricingPlan implements Serializable {
 
     private String planName;
     private int fixedPriceInPaisa = 1;
-    private float gstPercentage;
-    private float netPrice = 0.0f;
+    private int gstPercentage;
+    private float netPrice ;
     private String hsnNo;
     private String createdUserId;
 
-    public PricingPlan(String createdUserId, int fixedPriceInPaisa, String planName, float gstPercentage) {
+    public PricingPlan(String createdUserId, int fixedPriceInPaisa, String planName, int gstPercentage) {
         this.createdUserId = createdUserId;
         this.fixedPriceInPaisa = fixedPriceInPaisa;
         this.planName = planName;
         this.gstPercentage = gstPercentage;
+        this.netPrice = calculateNetPrice(fixedPriceInPaisa, gstPercentage, true);
+
+    }
+
+    float calculateNetPrice(int fixedPriceInPaisa, int gstPercentage, boolean gstInclusive){
+        float netPrice = 0;
+        float fixedPriceInRupee = (float)fixedPriceInPaisa / 100; //Divided by 100 because to convert integer amount(ex: 10, i.e., 10 paisa) to paisa in float(i.e., 0.10)
+        float gst = (float) gstPercentage / 100;
+
+        if(gstInclusive) netPrice = fixedPriceInRupee - gst;
+        netPrice = fixedPriceInRupee + gst;
+
+        System.out.println("NET PRICE: ");
+        System.out.println(netPrice);
+        return netPrice;
     }
 }

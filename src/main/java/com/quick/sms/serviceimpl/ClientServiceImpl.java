@@ -107,7 +107,8 @@ public class ClientServiceImpl implements ClientService {
     private List<ClientResponse> filterClients(List<Client> clientList){
         List<ClientResponse> clients = new ArrayList<>();
         clientList.forEach(client->{
-            ClientResponse resp = new ClientResponse(client.getId(), client.getUserType(), client.getName(), client.getUserName(),client.getPhoneNumber(), client.getWallet().getTotalCredit(), client.getWallet().getUsedCredit(), client.getCreateDate(), client.getUpdateDate(), client.getStatus());
+            String createdBy = clientRepository.findById(client.getCreatedBy()).get().getUserName();
+            ClientResponse resp = new ClientResponse(client.getId(), client.getUserType(), client.getName(), client.getUserName(),client.getPhoneNumber(), client.getWallet(), client.getCreateDate(), client.getUpdateDate(), client.getStatus(), createdBy);
             clients.add(resp);
         });
         return clients;
@@ -169,7 +170,8 @@ public class ClientServiceImpl implements ClientService {
         PricingBundle pricingBundle = null;
         if(requestObj.isBundlePriceApplicable()){
             Optional<PricingBundle> bundle = pricingBundleRepository.findById(requestObj.getBundlePriceId());
-            if(bundle.isPresent()) pricingBundle = bundle.get();
+            if(!bundle.isPresent())throw new InvalidParameterException("Invalid Bundle Id");
+            pricingBundle = bundle.get();
         }else{
             PricingPlan pricingObj = pricingService.findByPricingId(requestObj.getPricingId());
             if(pricingObj.getFixedPriceInPaisa() != requestObj.getPricingAmount())
@@ -261,13 +263,17 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDetailsResponse getClientByIdAndType(String userId, String userType) throws Exception {
         Client client = clientRepository.findByIdAndUserType(userId, userType).orElseThrow(()->new InvalidParameterException("Invalid UserId or UserType"));
-        return Client.build(client);
+        String createdBy = clientRepository.findById(client.getCreatedBy()).get().getUserName();
+
+        return Client.build(client).setCreatedBy(createdBy);
     }
 
     @Override
     public ClientDetailsResponse getClientById(String userId) throws Exception {
         Client client = clientRepository.findById(userId).orElseThrow(()->new IdNotFoundException("Invalid UserId"));
-        return Client.build(client);
+        String createdBy = clientRepository.findById(client.getCreatedBy()).get().getUserName();
+
+        return Client.build(client).setCreatedBy(createdBy);
     }
 
     public Client getClientByClientId(String userId) throws Exception {

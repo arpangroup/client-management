@@ -95,7 +95,7 @@ public class Client implements Serializable {
 		if(requestObj.getAccountType().toUpperCase().equals("POSTPAID"))
 			creditLimit = requestObj.getCreditLimit();
 
-		Wallet wallet = new Wallet(10, 0, 0.0, true);
+		Wallet wallet = new Wallet(10, 9, 1.0, true);// closing = openung-used
 		Address address = new Address()
 				.setCountry("INDIA")
 				.setState("")

@@ -40,22 +40,22 @@ public class AuthController {
 		return authService.loginClient(loginRequest);
 	}
 
-	@PostMapping("password/forgot")
-	public String forgotPassword(@Valid @RequestBody Authentication authentication, ForgotPasswordDto forgotPasswordDto) throws Exception{
+	@PostMapping("/password/forgot")
+	public String forgotPassword(@Valid ForgotPasswordDto forgotPasswordDto) throws Exception{
 		return authService.forgotPassword(forgotPasswordDto);
 	}
 
-	@PostMapping("password/change")
+	@PostMapping("/password/change")
 	public String changePasswordAfterLogin(@Valid @RequestBody ChangePasswordDto changePasswordDto) throws Exception{
 		return authService.changePasswordAfterLogin(changePasswordDto);
 	}
 
-	@PostMapping("password/change/by_otp")
+	@PostMapping("/password/change/by_otp")
 	public String changePasswordBeforeLogin(@Valid @RequestBody ChangePasswordByOtpDto dto) throws Exception{
 		return authService.changePasswordBeforeLogin(dto);
 	}
 
-	@PostMapping("password/reset")
+	@PostMapping("/password/reset")
 	public String resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto) throws Exception{
 		return authService.resetPassword(resetPasswordDto);
 	}

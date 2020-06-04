@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface PricingPlanRepository extends MongoRepository<PricingPlan, String> {
     Optional<PricingPlan> findByIdAndFixedPriceInPaisa(String id, int priceAmount);
+    Optional<PricingPlan> findByCreatedUserIdAndPlanNameAndFixedPriceInPaisa(String creatorId, String planName, int fixedPriceInPaisa);
+
     Optional<PricingPlan> findByIdAndCreatedUserId(String pricingId, String creatorId);
     List<PricingPlan> findAllByCreatedUserId(String userId);
 }

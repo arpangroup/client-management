@@ -60,10 +60,10 @@ public class DBCommandLineRunner implements CommandLineRunner {
         return clientRepository.save(superAdmin);
     }
     private void createPricingBySuperAdmin(Client superAdmin) throws Exception{
-        PricingPlan pricingPlan1 = new PricingPlan(superAdmin.getId(), 25, "Basic Plan1", 18.0f);
-        PricingPlan pricingPlan2 = new PricingPlan(superAdmin.getId(), 20, "Basic Plan2", 18.0f);
-        PricingPlan pricingPlan3 = new PricingPlan(superAdmin.getId(), 18, "Gold Plan", 18.0f);
-        PricingPlan pricingPlan4 = new PricingPlan(superAdmin.getId(), 10, "Premium Plan", 18.0f);
+        PricingPlan pricingPlan1 = new PricingPlan(superAdmin.getId(), 25, "Basic Plan1", 18);
+        PricingPlan pricingPlan2 = new PricingPlan(superAdmin.getId(), 20, "Basic Plan2", 18);
+        PricingPlan pricingPlan3 = new PricingPlan(superAdmin.getId(), 18, "Gold Plan", 18);
+        PricingPlan pricingPlan4 = new PricingPlan(superAdmin.getId(), 10, "Premium Plan", 18);
 
         pricingPlan1.setId("demo_p1");
         pricingPlan2.setId("demo_p2");
@@ -127,7 +127,7 @@ public class DBCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        /*
+
         createRoutes();
         Client superAdmin = createSuperAdmin(); // ID: 5ebc2fc9df8b1b6b98fdb83e
         createPricingBySuperAdmin(superAdmin);
@@ -141,7 +141,7 @@ public class DBCommandLineRunner implements CommandLineRunner {
         ClientDetailsResponse reseller1 = createClient("RESELLER", ROUTE_TRANSACTIONAL, true, "demo_p1", admin1.getId());
 
         ClientDetailsResponse client1 = createClient("CLIENT", ROUTE_PROMOTIONAL, true, "demo_p1", reseller1.getId());
-    */
+
 
     }
 }

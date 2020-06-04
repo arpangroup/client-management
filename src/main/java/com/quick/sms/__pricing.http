@@ -1,0 +1,62 @@
+//getAllPricingBasedOnClientId(clientId)
+GET http://localhost:8081/api/v1/pricing/price/1/all
+
+###
+
+//createPlan()
+POST http://localhost:8081/api/v1/pricing/plan/create
+Content-Type: application/json
+
+{
+  "planName": "Plan 1234",
+  "fixedPriceInPaisa": 11,
+  "gstPercentage": 18,
+  "hsnNo": "",
+  "createdUserId": "5ed73ea5552acf56da83263d"
+
+}
+
+
+###
+
+//getAllBundleBasedOnClientId(clientId)
+GET http://localhost:8081/api/v1/pricing/bundle/1/all
+
+###
+
+//createBundle()
+POST http://localhost:8081/api/v1/pricing/bundle/create
+Content-Type: application/json
+
+{
+  "planName": "Bundle 1234",
+  "creatorId": "",
+  "bundles": [
+    {
+      "startingUnit": 100,
+      "endingUnit": 500,
+      "unitPrice": 0.15,
+      "gstPercentage": 0.18,
+      "isGstInclusive": false
+    },
+    {
+      "startingUnit": 100,
+      "endingUnit": 500,
+      "unitPrice": 0.20,
+      "gstPercentage": 0.18,
+      "isGstInclusive": false
+    }
+  ]
+
+}
+
+
+###
+
+//deletePlan()
+DELETE http://localhost:8081/api/v1/pricing/plan/delete/{id}
+
+###
+
+//deleteBundle()
+DELETE http://localhost:8081/api/v1/pricing/bundle/delete{id}

@@ -41,6 +41,7 @@ public class ClientDetailsResponse {
     private Wallet wallet;
 
     private Date createDate;
+    private String createdBy;
     private Date updateDate;
     private String status;
 

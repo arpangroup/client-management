@@ -5,7 +5,7 @@ GET http://localhost:8081/getAllClients
 
 
 // GetClientDetails(clientId)
-GET http://localhost:8081/getClientDetails/5ed73ea5552acf56da832643
+GET http://localhost:8081/getClientDetails/5ed73ea5552acf56da83263d
 
 ###
 
@@ -23,7 +23,7 @@ Content-Type: application/json
   "userType": "ADMIN",
   "name": "John Doe",
   "email": "john@doe.com",
-  "username": "john_doe",
+  "username": "john_doe1",
   "password": "password",
   "phoneNumber": "1234567890",
   "routeIdList": ["1"],
@@ -39,17 +39,15 @@ Content-Type: application/json
   "applyDropping": true,
   "droppingPercentage": 10,
   "droppingAccessApplicableToChild": true,
-  "isBundlePriceApplicable": false,
-  "pricingId": "demo_p1",
-  "pricingAmount": 10,
-  "bundlePriceId": "",
+  "bundlePriceApplicable": true,
+  "pricingId": "5ed73ea5552acf56da83263b",
+  "pricingAmount": 13,
+  "bundlePriceId": "5ed73ea5552acf56da83263b",
   "creatorId": "1"
-
 }
 
 
 ###
-
 
 PUT http://localhost:8081/updateClient
 Content-Type: application/json

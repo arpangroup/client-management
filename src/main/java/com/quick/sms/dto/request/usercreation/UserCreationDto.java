@@ -76,7 +76,7 @@ public class UserCreationDto {
     private boolean droppingAccessApplicableToChild = false;
 
 
-    private boolean isBundlePriceApplicable = true;
+    private boolean bundlePriceApplicable;
     @NotNull(message = "pricingId cant be null")
     @NotEmpty(message = "pricingId cant be empty")
     private String pricingId;

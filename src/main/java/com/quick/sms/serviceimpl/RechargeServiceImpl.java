@@ -28,21 +28,57 @@ public class RechargeServiceImpl implements RechargeService {
     @Autowired
     TransactionRechargeRepository transactionRechargeRepository;
 
+
     @Override
     public TransactionRecharge makeRecharge(RechargeRequest rechargeRequest) throws Exception {
         Optional<Client> clientOptional =  clientRepository.findById(rechargeRequest.getUserId());
         clientOptional.orElseThrow(()-> new IdNotFoundException("Invalid ClientId"));
         Client client = clientOptional.get();
 
-         double rechargeAmount = rechargeRequest.getRechargeAmount();
-         double openingBalance = client.getWallet().getOpeningBalance() + rechargeAmount;
-         int totalCredits = client.getWallet().getTotalCredit() + rechargeRequest.getNoOfCredit();
+        Wallet wallet = new Wallet(10, 10, 0.0, true);// closing = openung-used
+
+        /*
+        Wallet(10, 9, 1.0, true);// closing = opening-used
+        private String userId;
+        private int noOfCredit;
+        private double rechargeAmount;
+        private String rechargeGateway;
+        private String refNo;
+
+
+
+            Previously:
+                openingCredit : 10;       UsedCredit: 1;       closingCredit: (opening-used) = 9
+                =====================================================================================
+100 Recharge:   (=openingBal) => 9            0                     (closingBal + newRecharge) =9 +100 =109
+
+10 Used                9                      10                           99
+1 used                 9                      11                           98
+5 used                 9                      16                           93
+500 Recharge:  (=LastClosingBal) => 93         0                    (NewOpeningBal + newRecharge) =93 +500 =
+
+
+         */
+
+
+        double lastOpeningStock = client.getWallet().getOpeningCredit();
+        double usedStock        = client.getWallet().getUsedCredit();
+        double lastClosingStock = client.getWallet().getClosingCredit();
+
+        // After Recharge:
+        double newCurrentStock     = rechargeRequest.getRechargeAmount();  //100
+        double currentOpeningStock = lastOpeningStock;
+        usedStock                  = 0.0f;
+        double currentClosingStock = currentOpeningStock + newCurrentStock;
+
+
+
 
         // Make Log object
-        TransactionRecharge transactionRecharge = new TransactionRecharge(client.getId(), rechargeRequest.getNoOfCredit(), rechargeRequest.getRechargeAmount(), openingBalance, rechargeRequest.getRechargeGateway(), rechargeRequest.getRefNo());
+        TransactionRecharge transactionRecharge = new TransactionRecharge(client.getId(), rechargeRequest.getNoOfCredit(), rechargeRequest.getRechargeAmount(), currentOpeningStock, currentClosingStock, rechargeRequest.getRechargeGateway(), rechargeRequest.getRefNo());
 
         // Update wallet of the client:
-        client.getWallet().setOpeningBalance(openingBalance).setTotalCredit(totalCredits);
+        client.getWallet().setOpeningCredit(currentOpeningStock).setUsedCredit(usedStock).setClosingCredit(currentClosingStock);
 
         clientRepository.save(client);
         TransactionRecharge rechageResp = transactionRechargeRepository.save(transactionRecharge);
@@ -58,6 +94,8 @@ public class RechargeServiceImpl implements RechargeService {
         Client client = clientOptional.get();
 
         client.getWallet().setActive(true);
+
+        clientRepository.save(client);
         return true;
     }
 

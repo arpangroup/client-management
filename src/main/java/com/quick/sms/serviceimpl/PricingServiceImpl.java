@@ -6,6 +6,7 @@ import com.quick.sms.dto.response.price.Bundle;
 import com.quick.sms.dto.response.price.BundlePriceResponse;
 import com.quick.sms.exception.ConflictException;
 import com.quick.sms.exception.IdNotFoundException;
+import com.quick.sms.exception.InvalidParameterException;
 import com.quick.sms.repository.*;
 import com.quick.sms.service.PricingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class PricingServiceImpl implements PricingService {
     @Override
     @Transactional
     public PricingPlan findOrCreate(PricingPlan pricing) throws Exception {
+        if(pricing.getCreatedUserId() == null) throw new InvalidParameterException("Invalid CreatorId");
+
         if(pricing.getId() != null){
             Optional<PricingPlan> pricingPlan = pricingPlanRepository.findByIdAndFixedPriceInPaisa(pricing.getId(), pricing.getFixedPriceInPaisa());
             // If same price amount is exist then no need of creating new Pricing
@@ -34,9 +37,14 @@ public class PricingServiceImpl implements PricingService {
             PricingPlan pricingObj = new PricingPlan(pricing.getCreatedUserId(), pricing.getFixedPriceInPaisa(), pricing.getPlanName(),pricing.getGstPercentage());
             return pricingPlanRepository.save(pricingObj);
         }else{
+            Optional<PricingPlan> pricingPlan = pricingPlanRepository.findByCreatedUserIdAndPlanNameAndFixedPriceInPaisa(pricing.getCreatedUserId(), pricing.getPlanName(), pricing.getFixedPriceInPaisa());
+            if(pricingPlan.isPresent()) return pricingPlan.get();
+
             PricingPlan pricingObj = new PricingPlan(pricing.getCreatedUserId(), pricing.getFixedPriceInPaisa(), pricing.getPlanName(),pricing.getGstPercentage());
             return pricingPlanRepository.save(pricingObj);
         }
+
+
     }
 
     @Override

@@ -40,12 +40,12 @@ public class PricingController {
         return pricingService.createBundlePrice(bundlePriceRequest);
     }
 
-    @PutMapping("/plan/delete/{id}")
+    @DeleteMapping("/plan/delete/{id}")
     public void deletePlan(@PathVariable("id") String id) throws Exception{
         pricingService.deletePlan(id);
     }
 
-    @PutMapping("/bundle/delete{id}")
+    @DeleteMapping("/bundle/delete{id}")
     public void deleteBundle(@PathVariable("id") String id) throws Exception{
         pricingService.deleteBundle(id);
     }

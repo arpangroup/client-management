@@ -1,0 +1,30 @@
+
+POST http://localhost:8081//api/v1/recharge
+Content-Type: application/json
+
+{
+  "userId": "5ed73ea5552acf56da83263d",
+  "noOfCredit": "500",
+  "rechargeAmount": "500",
+  "rechargeGateway": "RAZORPAY",
+  "refNo": "123466"
+}
+
+
+###
+
+//getRechargeHistory(clientId)
+GET http://localhost:8081//api/v1/recharge/5ed73ea5552acf56da83263d
+
+
+###
+
+POST http://localhost:8081//api/v1/recharge/approve
+Content-Type: application/json
+
+{
+  "approverId": "",
+  "clientId":  "5ed73ea5552acf56da83263d"
+}
+
+###

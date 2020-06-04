@@ -4,7 +4,77 @@ Content-Type: application/json
 
 {
   "password": "password",
-  "username": "gautam.verma"
+  "username": "ankal.bandopadhyay"
 }
 
 ###
+
+POST http://localhost:8081/auth/password/forgot
+Content-Type: application/json
+
+{
+  "clientId":  "",
+  "email" :  "",
+  "phone":  ""
+}
+
+###
+
+//changePasswordAfterLogin()
+POST http://localhost:8081/auth/password/change
+Content-Type: application/json
+
+{
+  "userId":  "5ed73ea5552acf56da83263d",
+  "oldPassword" :  "UPDATE",
+  "newPassword":  "UPDATE123"
+}
+
+###
+
+POST http://localhost:8081/auth/password/reset
+Content-Type: application/json
+
+{
+  "clientId":  "5ed73ea5552acf56da83263d"
+}
+
+
+###
+
+POST http://localhost:8081/auth/activateUser
+Content-Type: application/json
+
+{
+  "creatorId":  "",
+  "clientId" :  "5ed73ea5552acf56da83263d",
+  "description":  "",
+  "status": true
+}
+
+###
+
+POST http://localhost:8081/auth/blockUser
+Content-Type: application/json
+
+{
+  "creatorId":  "",
+  "clientId" :  "5ed73ea5552acf56da83263d",
+  "description":  "",
+  "status": true
+}
+
+###
+
+POST http://localhost:8081/auth/deleteUser
+Content-Type: application/json
+
+{
+  "creatorId":  "",
+  "clientId" :  "5ed73ea5552acf56da83263d",
+  "description":  "",
+  "status": false
+}
+
+###
+
