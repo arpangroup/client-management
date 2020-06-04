@@ -108,8 +108,11 @@ public class ClientServiceImpl implements ClientService {
         List<ClientResponse> clients = new ArrayList<>();
         clientList.forEach(client->{
             String createdBy = "";
-            Optional<Client> parent = clientRepository.findById(client.getCreatedBy());
-            if(parent.isPresent()) createdBy = parent.get().getUserName();
+            if(client.getCreatedBy() != null){
+                Optional<Client> parent = clientRepository.findById(client.getCreatedBy());
+                if(parent.isPresent()) createdBy = parent.get().getUserName();
+            }
+
             ClientResponse resp = new ClientResponse(client.getId(), client.getUserType(), client.getName(), client.getUserName(),client.getPhoneNumber(), client.getWallet(), client.getCreateDate(), client.getUpdateDate(), client.getStatus(), createdBy);
             clients.add(resp);
         });
